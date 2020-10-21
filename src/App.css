@@ -36,3 +36,19 @@
     transform: rotate(360deg);
   }
 }
+
+.my-h-scroll {
+  display: flex;
+  height: 245px;
+  overflow-x: scroll;
+}
+
+.my-h-scroll::-webkit-scrollbar {
+  display: none;
+}
+
+.my-card {
+  width: 'auto';
+  height: 200px;
+  min-width: 180px;
+}
