@@ -15,14 +15,14 @@ class ViewallGenre extends Component {
         if (this.props.genre === 'popularmovies') {
             fetch(`http://127.0.0.1:7909/${this.props.genre}`)
             .then(response => response.json())
-            .then(movies => this.setState({genredmovies: movies[0]}))
+            .then(movies => this.setState({genredmovies: movies}))
         } else if(this.props.genre === 'recommendations') {
             if (!this.props.isSignedIn) {
                 this.setState({genredmovies:"Please login and rate some movies to get recommendations"})
             } else {
                 fetch(`http://127.0.0.1:7909/${this.props.genre}/${this.props.userId}`)
                 .then(response => response.json())
-                .then(movies => this.setState({genredmovies:movies[0]}))
+                .then(movies => this.setState({genredmovies:movies}))
             }
         } else if(this.props.genre.slice(0,10)==='Similar to') {
             fetch(`http://127.0.0.1:7909/similarmovies/${this.props.movieId}`)
@@ -31,7 +31,7 @@ class ViewallGenre extends Component {
         }  else {
             fetch(`http://127.0.0.1:7909/movies/${this.props.genre}`)
             .then(response => response.json())
-            .then(movies => this.setState({genredmovies: movies[0]}))
+            .then(movies => this.setState({genredmovies: movies}))
         }
     }
     render(){

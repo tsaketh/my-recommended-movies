@@ -52,7 +52,7 @@ class Register extends Component{
     onSignUp = () => {
         this.setState({errors: ""});
         if (this.state.nameError === "" && this.state.emailError === "" && this.state.passwordError === "") {
-            fetch("http://127.0.0.1:3001/signup", {
+            fetch("https://floating-reaches-01708.herokuapp.com/signup", {
                 method: 'POST',
                 headers: {
                     'Content-type': 'application/json'

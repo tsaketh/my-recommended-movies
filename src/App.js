@@ -61,8 +61,8 @@ class App extends Component {
   // }
 
   render(){
-    const genres = ['recommendations',
-                    'popularmovies', 
+    const genres = ['recommendations', 
+                    'popularmovies',
                     'Action', 
                     'Comedy',
                     'Adventure',
