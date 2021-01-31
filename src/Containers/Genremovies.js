@@ -16,7 +16,7 @@ class Genremovies extends Component {
         // console.log('genre: '+this.props.genre+' in didUpdate')
         if(this.props.genre.slice(0,10)==='Similar to'  && this.props.movieId !== prevprops.movieId) {
             // console.log('similar to '+this.props.movieId+ ', genre: '+this.props.genre.slice(0,10))
-            fetch(`http://127.0.0.1:7909/similarmovies/${this.props.movieId}`)
+            fetch(`https://ts-recommender-api-11798.herokuapp.com/similarmovies/${this.props.movieId}`)
             .then(response => response.json())
             .then(movies => this.setState({movies: movies}))
             // .catch(e => {alert("Failed to load the data. Please check your internet connection and try again after sometime")})
@@ -26,7 +26,7 @@ class Genremovies extends Component {
         //console.log("Entered GenreMovies")
         if (this.props.genre === 'popularmovies') {
            // console.log('genre: '+this.props.genre)
-            fetch(`http://127.0.0.1:7909/${this.props.genre}`)
+            fetch(`https://ts-recommender-api-11798.herokuapp.com/${this.props.genre}`)
             .then(response => response.json())
             .then(movies => this.setState({movies: movies}))
             .catch(e => {alert("Failed to load the data. Please check your internet connection and try again after sometime")})
@@ -36,7 +36,7 @@ class Genremovies extends Component {
             if (!this.props.isSignedIn) {
                 this.setState({movies:"Please login and rate some movies to get recommendations"})
             } else {
-                fetch(`http://127.0.0.1:7909/${this.props.genre}/${this.props.userId}`)
+                fetch(`https://ts-recommender-api-11798.herokuapp.com/${this.props.genre}/${this.props.userId}`)
                 .then(response => response.json())
                 .then(movies => this.setState({movies:movies}))
                 .catch(e => {alert("Failed to load the data. Please check your internet connection and try again after sometime")})
@@ -44,13 +44,13 @@ class Genremovies extends Component {
             //console.log(this.state.movies)
         } else if(this.props.genre.slice(0,10)==='Similar to') {
             // console.log('similar to '+this.props.movieId+ ', genre: '+this.props.genre.slice(0,10))
-            fetch(`http://127.0.0.1:7909/similarmovies/${this.props.movieId}`)
+            fetch(`https://ts-recommender-api-11798.herokuapp.com/similarmovies/${this.props.movieId}`)
             .then(response => response.json())
             .then(movies => this.setState({movies: movies}))
             .catch(e => {alert("Failed to load the data. Please check your internet connection and try again after sometime")})
         } else {
             //console.log('genre: '+this.props.genre)
-            fetch(`http://127.0.0.1:7909/movies/${this.props.genre}`)
+            fetch(`https://ts-recommender-api-11798.herokuapp.com/movies/${this.props.genre}`)
             .then(response => response.json())
             .then(movies => this.setState({movies: movies}))
             .catch(e => {alert("Failed to load the data. Please check your internet connection and try again after sometime")})

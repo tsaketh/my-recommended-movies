@@ -10,8 +10,8 @@ class Ratemovie extends Component {
         }
     }
     onRateOk(){
-        console.log('rating : '+this.state.rating)
-        fetch(`http://127.0.0.1:7909/rateMovie/usr/${this.props.userId}/movie/${this.props.movieId}/rating/${this.state.rating}`, {
+        // console.log('rating : '+this.state.rating)
+        fetch(`https://ts-recommender-api-11798.herokuapp.com/rateMovie/usr/${this.props.userId}/movie/${this.props.movieId}/rating/${this.state.rating}`, {
             method: 'POST'
         })
          .then(response => response.json())

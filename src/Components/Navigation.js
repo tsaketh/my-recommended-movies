@@ -1,12 +1,12 @@
 import React from 'react';
-// import search from './search.png';
+// import icon from './icon.png';
 
 const Navigation = ({isSignedIn, route, routeChange, userAuth}) => {
     if (isSignedIn) {
         if (route === 'home') {
             return (
                 <nav className="flex-grow pa flex items-center justify-end bb b--white-10 bg-black my-top">
-                    {/* <img className='bg-white' src={search} alt="" /> */}
+                    {/* <img className='bg-white' src={icon} alt="" /> */}
                     <p 
                         onClick={()=>{routeChange('search')}}
                         className="f6 link dib white dim mr3 mr4-ns pointer" 

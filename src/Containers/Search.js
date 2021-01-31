@@ -30,7 +30,7 @@ class Search extends Component {
     // }
     loadResults=()=>{
         if (this.state.searchfield.length>=3) {
-            fetch(`http://127.0.0.1:7909/search/${this.state.searchfield}`)
+            fetch(`https://ts-recommender-api-11798.herokuapp.com/search/${this.state.searchfield}`)
             .then(response => response.json())
             .then(users => this.setState({robots: users}))
         }
@@ -48,7 +48,10 @@ class Search extends Component {
                     ?<div style={{paddingTop: '22vh'}}>
                         <h3 className='f2'>No Results Found</h3>
                      </div>
-                    :<Scroll>
+                    :(this.state.robots.length===0)
+                        ?<div>
+                            <h3 className='pa3 f6'>Enter seach text in search bar and press "Enter" to view results</h3>
+                        </div>:<Scroll>
                     <CardContainer movies = {this.state.robots} classes = 'tc dib' onMovieClick={this.props.onMovieClick}
                     routeChange={this.props.routeChange}/>
                 </Scroll>}

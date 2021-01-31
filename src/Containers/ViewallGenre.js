@@ -13,23 +13,23 @@ class ViewallGenre extends Component {
     }
     componentDidMount() {
         if (this.props.genre === 'popularmovies') {
-            fetch(`http://127.0.0.1:7909/${this.props.genre}`)
+            fetch(`https://ts-recommender-api-11798.herokuapp.com/${this.props.genre}`)
             .then(response => response.json())
             .then(movies => this.setState({genredmovies: movies}))
         } else if(this.props.genre === 'recommendations') {
             if (!this.props.isSignedIn) {
                 this.setState({genredmovies:"Please login and rate some movies to get recommendations"})
             } else {
-                fetch(`http://127.0.0.1:7909/${this.props.genre}/${this.props.userId}`)
+                fetch(`https://ts-recommender-api-11798.herokuapp.com/${this.props.genre}/${this.props.userId}`)
                 .then(response => response.json())
                 .then(movies => this.setState({genredmovies:movies}))
             }
         } else if(this.props.genre.slice(0,10)==='Similar to') {
-            fetch(`http://127.0.0.1:7909/similarmovies/${this.props.movieId}`)
+            fetch(`https://ts-recommender-api-11798.herokuapp.com/similarmovies/${this.props.movieId}`)
             .then(response => response.json())
             .then(movies => this.setState({genredmovies: movies}))
         }  else {
-            fetch(`http://127.0.0.1:7909/movies/${this.props.genre}`)
+            fetch(`https://ts-recommender-api-11798.herokuapp.com/movies/${this.props.genre}`)
             .then(response => response.json())
             .then(movies => this.setState({genredmovies: movies}))
         }
