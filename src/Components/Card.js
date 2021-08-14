@@ -1,42 +1,50 @@
 import React from 'react';
 import 'tachyons';
-// import Tooltip from './Tooltip';
+import Tooltip from './Tooltip';
 // import ReactStars from 'react-rating-stars-component';
 import customer from './customer.png'
 
 const Card = ({Id, Title, rating, ratings, Year, Genre, onMovieClick, routeChange}) => {
-    const Genretemp = Genre
+    // const Genretemp = Genre
     if (Title.match(/^[/"][0-9a-zA-Z:. ]+,[0=9a-zA-Z:. ]+[/"]$/) !== null) {
         Title= Title.slice(1,-1).split(', ')[1]+' '+Title.slice(1,-1).split(', ')[0]
     }
-    const Titletemp = Title
-    if (Title.length >=10) {
-        Title = Title.slice(0, 8)+'...'
-    }
-    if (Genre.length >=20) {
-        Genre = Genre.slice(0,17)+'...'
-    }      
+    // const Titletemp = Title
+    // if (Title.length >=10) {
+    //     Title = Title.slice(0, 8)+'...'
+    // }
+    // if (Genre.length >=20) {
+    //     Genre = Genre.slice(0,17)+'...'
+    // }      
     return (
         <div className= 'tc bg-light-green dib my-card br3 pa3 ma2 grow bw2 shadow-5 pointer'
             id={`main_${Id}`}
             onClick={()=>{onMovieClick({
                 'Id': Id, 
-                'Title': Titletemp, 
+                'Title': Title, 
                 'rating': rating, 
                 'ratings': ratings, 
                 'Year': Year, 
-                'Genre': Genretemp
+                'Genre': Genre
             })
             routeChange('similarmovies')}}>
             <div id={`sub_${Id}`}>
-                {/* <Tooltip classes='f2 bold' 
-                    title={Title}
-                    tip={Titletemp}
-                /> */}
+                <Tooltip tip={Title}>
+                    <h2 className="text-ellipsis"
+                        id={`title_${Id}`}>
+                        {Title}
+                    </h2>
+                </Tooltip>
                 {/* <Tooltip hover={hover} tip={Titletemp}/> */}
-                <h2 id={`title_${Id}`}>{ Title }</h2>
+                {/* <h2 className="tooltip" id={`title_${Id}`}>{ Title }</h2> */}
                 <p id={`year_${Id}`}>{ Year }</p>
-                <p id={`genre_${Id}`}>{ Genre }</p>
+                <Tooltip tip={Genre}>
+                    <p className="text-ellipsis"
+                        id={`genre_${Id}`}>
+                        {Genre}
+                    </p>
+                </Tooltip>
+                {/* <p className="text-ellipsis" id={`genre_${Id}`}>{ Genre }</p> */}
                 <div className = 'flex justify-between' id={`sub2_${Id}`}>
                     <div className='flex justify-start justify-items-center pa2 ' id={`sub3_${Id}`}>
                         {/* <ReactStars count={5}
