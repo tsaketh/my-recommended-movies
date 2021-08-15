@@ -23,13 +23,8 @@ class App extends Component {
       route:'home', 
       genre: '', 
       movie: {}, 
-      isSignedIn: true, 
-      user: {
-        'id': 270,
-        'name': 'test',
-        'email': 'test@mail.com',
-        'role': 'Admin'
-      }
+      isSignedIn: false, 
+      user: {}
       // hover: 'false'
     }
   }
