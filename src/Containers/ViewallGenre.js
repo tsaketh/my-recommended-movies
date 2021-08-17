@@ -43,8 +43,8 @@ class ViewallGenre extends Component {
                 navigation={'Back'} 
                 route={(this.props.genre.slice(0,10)==='Similar to')?'similarmovies':'home'}
             />
-            {(this.state.genredmovies==="Please rate the movies as per your interest to start seeing the movies recommended by our system"||
-                this.state.genredmovies === "No sufficient ratings" ||
+            {(this.state.genredmovies[0]==="Please rate the movies as per your interest to start seeing the movies recommended by our system"||
+                this.state.genredmovies[0] === "No sufficient ratings" ||
                 this.state.genredmovies === "Please login and rate some movies to get recommendations")
                 ?<ErrorHandler movies={this.state.genredmovies}/>:<div className="my-v-scroll"><CardContainer movies = {this.state.genredmovies} classes = 'tc dib' onMovieClick={this.props.onMovieClick}
                 routeChange={this.props.routeChange}/></div>}
