@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useState } from 'react';
 import 'tachyons';
 
-const Table = ({contents}) => {
+const Table = ({contents, onOptionClick}) => {
+    const [displayOptionFor, setDisplayOptionFor] = useState('');
     const obj = contents[0];
     let arr = [];
     for (const key in obj) {
@@ -26,7 +27,14 @@ const Table = ({contents}) => {
         return(
             <tr key={Object.hasOwnProperty.call(obj, 'name')?obj.name:obj.Id} className="table-contents">
                 {cols}
-                {/* <td className="table-row-options" style={{padding: '5px'}}>...</td> */}
+                {(Object.hasOwnProperty.call(obj, 'email'))?<td className="table-row-options" style={{padding: '5px'}}>
+                    <div className="pointer dib" onClick={()=>{(displayOptionFor!==obj.email)?setDisplayOptionFor(obj.email):setDisplayOptionFor('')}}>...</div>
+                </td>:<></>}
+                {(Object.hasOwnProperty.call(obj, 'email') && displayOptionFor===obj.email)?<div style={{position: 'absolute', right: '50px', marginTop: '30px'}}>
+                        <span className="pointer" 
+                            style={{borderRadius: '5px', backgroundColor: 'lightseagreen', padding: '5px', zIndex: 5}}
+                            onClick={()=>{onOptionClick(obj.email, obj.role); setDisplayOptionFor('')}}>{(obj.role==='User')?'Make Admin':'Remove as Admin'}</span>
+                    </div>:<></>}
             </tr>
         )
     })

@@ -8,6 +8,7 @@ import PaginationTools from '../Components/PaginationTools';
 import Modal from '../Components/Modal';
 import CreateMovieForm from '../Components/CreateMovieForm';
 import Toaster from '../Components/Toaster';
+import Confirmation from '../Components/Confirmation';
 
 class Admin extends Component{
 constructor(){
@@ -30,17 +31,19 @@ constructor(){
         movieGenre:'',
         movieYear:'',
         movieCreationStatus:'',
-        toasterState: false
+        toasterState: false,
+        confirmationPopupState: false,
+        optionClickedFor: ''
     }
 }
 componentDidMount(){
     if (this.state.activeOption==='Users') {
-        fetch(`http://localhost:8000/users?offset=${(this.state.currentPage-1)*this.state.pageLimit}&limit=${this.state.pageLimit}`)
+        fetch(`https://floating-reaches-01708.herokuapp.com/users?offset=${(this.state.currentPage-1)*this.state.pageLimit}&limit=${this.state.pageLimit}`)
             .then(res => res.json())
-            .then(users => {this.setState({tableContent: users.results, totalRecords: users.totalRecords[0]})})
+            .then(users => {this.setState({tableContent: users.results, totalRecords: users.totalRecords})})
             .catch(err => {alert("Unkown error occured while fetching users")})
     } else {
-        fetch(`http://127.0.0.1:7909/movies?offset=${(this.state.currentPage-1)*this.state.pageLimit+1}&limit=${this.state.pageLimit}`)
+        fetch(`https://ts-recommender-api-11798.herokuapp.com/movies?offset=${(this.state.currentPage-1)*this.state.pageLimit+1}&limit=${this.state.pageLimit}`)
             .then(res => res.json())
             .then(movies => {this.setState({tableContent: movies.results, totalRecords: movies.totalRecords[0]})})
             .catch(err => {alert("Unknown error occured while fetching users")})   
@@ -48,14 +51,14 @@ componentDidMount(){
 }
 
 componentDidUpdate(prevProps, prevState){
-    if (prevState.activeOption!==this.state.activeOption || prevState.pageLimit!==this.state.pageLimit || prevState.currentPage!==this.state.currentPage) {
+    if (prevState.activeOption!==this.state.activeOption || prevState.pageLimit!==this.state.pageLimit || prevState.currentPage!==this.state.currentPage || prevState.movieCreationStatus!==this.state.movieCreationStatus) {
         if (this.state.activeOption==='Users') {
-            fetch(`http://localhost:8000/users?offset=${(this.state.currentPage-1)*this.state.pageLimit}&limit=${this.state.pageLimit}&search=${this.state.searchfield}`)
+            fetch(`https://floating-reaches-01708.herokuapp.com/users?offset=${(this.state.currentPage-1)*this.state.pageLimit}&limit=${this.state.pageLimit}&search=${this.state.searchfield}`)
                 .then(res => res.json())
-                .then(users => {this.setState({tableContent: users.results, totalRecords: users.totalRecords[0]})})
+                .then(users => {this.setState({tableContent: users.results, totalRecords: users.totalRecords})})
                 .catch(err => {alert("Unkown error occured while fetching users")})
         } else {
-            fetch(`http://127.0.0.1:7909/movies?offset=${(this.state.currentPage-1)*this.state.pageLimit+1}&limit=${this.state.pageLimit}&search=${this.state.searchfield}`)
+            fetch(`https://ts-recommender-api-11798.herokuapp.com/movies?offset=${(this.state.currentPage-1)*this.state.pageLimit+1}&limit=${this.state.pageLimit}&search=${this.state.searchfield}`)
                 .then(res => res.json())
                 .then(movies => {this.setState({tableContent: movies.results, totalRecords: movies.totalRecords[0]})})
                 .catch(err => {alert("Unknown error occured while fetching users")})   
@@ -84,24 +87,24 @@ loadResults=()=>{
         // })
         this.setState({currentPage: 1})
         if (this.state.activeOption==='Users') {
-            fetch(`http://localhost:8000/users?offset=${(this.state.currentPage-1)*this.state.pageLimit}&limit=${this.state.pageLimit}&search=${this.state.searchfield}`)
+            fetch(`https://floating-reaches-01708.herokuapp.com/users?offset=${(this.state.currentPage-1)*this.state.pageLimit}&limit=${this.state.pageLimit}&search=${this.state.searchfield}`)
                 .then(res => res.json())
-                .then(users => {this.setState({tableContent: users.results, totalRecords: users.totalRecords[0]})})
+                .then(users => {this.setState({tableContent: users.results, totalRecords: users.totalRecords})})
                 .catch(err => {alert("Unkown error occured while fetching users")})
         } else {
-            fetch(`http://127.0.0.1:7909/movies?offset=${(this.state.currentPage-1)*this.state.pageLimit+1}&limit=${this.state.pageLimit}&search=${this.state.searchfield}`)
+            fetch(`https://ts-recommender-api-11798.herokuapp.com/movies?offset=${(this.state.currentPage-1)*this.state.pageLimit+1}&limit=${this.state.pageLimit}&search=${this.state.searchfield}`)
                 .then(res => res.json())
                 .then(movies => {this.setState({tableContent: movies.results, totalRecords: movies.totalRecords[0]})})
                 .catch(err => {alert("Unknown error occured while fetching users")})   
         }        
     } else {
         if (this.state.activeOption==='Users') {
-            fetch(`http://localhost:8000/users?offset=${(this.state.currentPage-1)*this.state.pageLimit}&limit=${this.state.pageLimit}`)
+            fetch(`https://floating-reaches-01708.herokuapp.com/users?offset=${(this.state.currentPage-1)*this.state.pageLimit}&limit=${this.state.pageLimit}`)
                 .then(res => res.json())
-                .then(users => {this.setState({tableContent: users.results, totalRecords: users.totalRecords[0]})})
+                .then(users => {this.setState({tableContent: users.results, totalRecords: users.totalRecords})})
                 .catch(err => {alert("Unkown error occured while fetching users")})
         } else {
-            fetch(`http://127.0.0.1:7909/movies?offset=${(this.state.currentPage-1)*this.state.pageLimit+1}&limit=${this.state.pageLimit}`)
+            fetch(`https://ts-recommender-api-11798.herokuapp.com/movies?offset=${(this.state.currentPage-1)*this.state.pageLimit+1}&limit=${this.state.pageLimit}`)
                 .then(res => res.json())
                 .then(movies => {this.setState({tableContent: movies.results, totalRecords: movies.totalRecords[0]})})
                 .catch(err => {alert("Unknown error occured while fetching users")})   
@@ -142,7 +145,7 @@ setMovieYear=(event)=>{
     this.setState({movieYear: event.target.value})
 }
 createMovie=()=>{
-    fetch(`http://127.0.0.1:7909/createMovie?title=${(this.state.movieTitle)}&genre=${this.state.movieGenre}&year=${this.state.movieYear}`, {
+    fetch(`https://ts-recommender-api-11798.herokuapp.com/createMovie?title=${(this.state.movieTitle)}&genre=${this.state.movieGenre}&year=${this.state.movieYear}`, {
         method: 'POST'
     })
         .then(res => res.json())
@@ -162,6 +165,35 @@ createMovie=()=>{
 }
 toggleToasterState=()=>{
     this.setState({toasterState: !this.state.toasterState})
+}
+toggleConfirmationPopupState=()=>{
+    this.setState({confirmationPopupState: !this.state.confirmationPopupState})
+}
+setOptionClickedFor=(email, role)=>{
+    this.setState({optionClickedFor: {
+        'email': email,
+        'role': role
+    }})
+    this.toggleConfirmationPopupState()
+}
+changeAccess=()=>{
+    fetch('https://floating-reaches-01708.herokuapp.com/change-role', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            email: this.state.optionClickedFor.email,
+            role: (this.state.optionClickedFor.role==='User')?'Admin':'User'
+        })
+    })
+    .then(res=>res.json())
+    .then(value=>{
+        this.setState({movieCreationStatus: value})
+        this.toggleConfirmationPopupState()
+        this.toggleToasterState()
+    })
+    .catch(err=>{alert("Unkown Error occured")})
 }
 render(){
     return(
@@ -183,8 +215,11 @@ render(){
                         <h3 className='f2'>No Results Found</h3>
                      </div>
                     :<div className="table-scroll tc">
-                        <Table contents={this.state.tableContent}/>
+                        <Table contents={this.state.tableContent} onOptionClick={this.setOptionClickedFor}/>
                     </div>}
+                <Modal modalState={this.state.confirmationPopupState} toggle={this.toggleConfirmationPopupState}>
+                    <Confirmation legend="Confirmation required" label={`Are you sure to change access for user with email ${this.state.optionClickedFor.email}`} onConfirmation={this.changeAccess}/>
+                </Modal>
                 <PaginationTools totalRecords={this.state.totalRecords} pageLimit={this.state.pageLimit} onPageSelect={this.onPageSelect} onPageLimitChange={this.onPageLimitChange} currentPage={this.state.currentPage}/>
             </div>
         </div>

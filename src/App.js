@@ -119,7 +119,8 @@ class App extends Component {
                           isSignedIn={this.state.isSignedIn}
                           // hoverChange={this.hoverChange}
                           // hover={this.state.hover}
-                          />}
+                          />
+                          }
       </div>
       // <Tooltip classes='f6 pointer' title='This is tit...' tip='This is title with long text complete'/>
       // <Ratemovie Title='movie title here'/>
