@@ -31,7 +31,7 @@ class ViewallGenre extends Component {
         }  else {
             fetch(`https://ts-recommender-api-11798.herokuapp.com/movies/${this.props.genre}`)
             .then(response => response.json())
-            .then(movies => this.setState({genredmovies: movies}))
+            .then(movies => this.setState({genredmovies: movies.results}))
         }
     }
     render(){

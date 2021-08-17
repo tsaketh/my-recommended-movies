@@ -11,8 +11,8 @@ import Navigation from './Components/Navigation';
 import SignIn from './Containers/SignIn';
 import Register from './Containers/Register';
 import Search from './Containers/Search';
-import Table from './Components/Table';
-import PageMenu from './Components/PageMenu';
+// import Table from './Components/Table';
+// import PageMenu from './Components/PageMenu';
 import Admin from './Containers/Admin';
 // import Tooltip from './Components/Tooltip';
 
