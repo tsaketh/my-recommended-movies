@@ -52,7 +52,7 @@ class Genremovies extends Component {
             //console.log('genre: '+this.props.genre)
             fetch(`https://ts-recommender-api-11798.herokuapp.com/movies/${this.props.genre}`)
             .then(response => response.json())
-            .then(movies => this.setState({movies: movies}))
+            .then(movies => this.setState({movies: movies.results}))
             .catch(e => {alert("Failed to load the data. Please check your internet connection and try again after sometime")})
             //console.log(this.state.movies)
         }

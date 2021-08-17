@@ -46,6 +46,16 @@
 .my-h-scroll::-webkit-scrollbar {
   display: none;
 }
+.my-v-scroll {
+  display: flex;
+  width: 100vw;
+  height: 75vh;
+  overflow-y: scroll;
+}
+
+.my-v-scroll::-webkit-scrollbar {
+  display: none;
+}
 
 .my-card {
   width: 'auto';
@@ -53,6 +63,107 @@
   min-width: 180px;
 }
 
+.my-v-scroll .my-card {
+  width: 180px;
+  height: 200px;
+}
+
+.text-ellipsis {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.table-contents, .table-headers {
+  border-spacing: 0%;
+  border-top: 1px solid lightslategrey;
+}
+.table-row-options {
+  border-left: 1px solid lightslategrey;
+}
+.table-contents:hover {
+  background-color: lightslategrey;
+}
+.table-scroll {
+  width: 100%;
+  height: 65vh;
+  overflow-y: auto;
+}
+th {
+  position: -webkit-sticky;
+  position: sticky;
+  top: 0;
+  z-index: 4;
+  background-color: lightslategray;
+}
+.pull-right {
+  margin-left: auto;
+  margin-right: 2%;
+}
+.admin-toolbar {
+  display: flex;
+  justify-content: flex-end;
+}
+.display-scroll-none::-webkit-scrollbar {
+  display: none;
+}
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.8);
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  z-index: 5;
+}
+
+.modal-inner {
+  position: relative;
+  width: 100%;
+  max-width: 640px;
+  max-height: 80vh;
+}
+
+.modal-inner .modal-close-btn {
+  position: absolute;
+  top: 16px;
+  right: -32px;
+  color: #fff;
+  border: none;
+}
+.toaster {
+  position: fixed;
+  bottom: 5px;
+  left: 5px;
+  background-color: rgba(0, 0, 0, 1);
+  border-radius: 5px;
+
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-end;
+}
+
+/* .toaster-inner {
+  position: relative;
+  width: 100%;
+  max-width: 640px;
+  max-height: 80vh;
+} */
+
+/* .toaster-close-btn {
+  position: absolute;
+  top: 16px;
+  right: 5px;
+  color: rgb(42, 180, 0);
+  border: none;
+} */
+/* .test {
+  background-color: #008080;
+} */
 @keyframes spin {
   from {
       transform: rotate(0deg);

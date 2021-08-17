@@ -6,7 +6,7 @@ const SearchBar = ({searchChange, loadResults}) => {
             <input 
                 className='pa3 ba b--green bg-lightest-blue' 
                 type="search" 
-                placeholder='search movies'
+                placeholder="type and click enter"
                 onChange={searchChange}
                 onKeyPress={(event)=>{
                     if(event.key==='Enter'){
