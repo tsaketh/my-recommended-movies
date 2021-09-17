@@ -1,5 +1,5 @@
 import React from 'react';
-// import icon from './icon.png';
+import MYprofile from './MYprofile.png';
 
 const Navigation = ({isSignedIn, userType, route, routeChange, userAuth}) => {
     return (
@@ -32,6 +32,12 @@ const Navigation = ({isSignedIn, userType, route, routeChange, userAuth}) => {
                 }}
                 className="f6 dib white bg-animate hover-bg-white hover-black no-underline pv2 ph4 br-pill ba b--white-20 pointer" 
                 >Sign Out</p>:<></>}
+            {(isSignedIn)
+                ?<div className="mh3 mt3 mb2">
+                    <img className="my-profile pointer" src={MYprofile} alt="" width="30px" height="30px"
+                        onClick = {()=>routeChange('profile')}/>
+                </div>
+                :<></>}
         </nav>
     ) 
 }

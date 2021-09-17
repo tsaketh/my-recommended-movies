@@ -11,6 +11,7 @@ import Navigation from './Components/Navigation';
 import SignIn from './Containers/SignIn';
 import Register from './Containers/Register';
 import Search from './Containers/Search';
+import Profile from './Containers/Profile';
 // import Table from './Components/Table';
 // import PageMenu from './Components/PageMenu';
 import Admin from './Containers/Admin';
@@ -24,7 +25,12 @@ class App extends Component {
       genre: '', 
       movie: {}, 
       isSignedIn: false, 
-      user: {}
+      user: {
+        name: "Saketh Thupurani",
+        email: "tsaketh1107@gmail.com",
+        role: "Admin"
+      }
+      // user: {}
       // hover: 'false'
     }
   }
@@ -90,38 +96,42 @@ class App extends Component {
       />
     })
     return(
-      <div>
-          <Navigation isSignedIn={this.state.isSignedIn} userType={this.state.user.role} route={this.state.route} routeChange={this.routeChange} userAuth={this.userAuth}/>
-          {(this.state.route==='home')
-          ?<div>
-            {moviedivs}
-          </div>
-          :(this.state.route==='similarmovies')
-              ?<Viewmovieinfo movie={this.state.movie} routeChange={this.routeChange} genreChange={this.genreChange}
-                onMovieClick={this.onMovieClick} userId={this.state.user.id} isSignedIn={this.state.isSignedIn}/>
-              :(this.state.route==='rate')
-                ?<Ratemovie Title={this.state.movie.Title} movieId={this.state.movie.Id} routeChange={this.routeChange} userId={this.state.user.id} isSignedIn={this.state.isSignedIn}/>
-                :(this.state.route==='signin')
-                  ?<SignIn routeChange={this.routeChange} getUser={this.getUser} userAuth={this.userAuth}/>
-                  :(this.state.route==='signup')
-                    ?<Register routeChange={this.routeChange} getUser={this.getUser} userAuth={this.userAuth}/>
-                    :(this.state.route==='search')
-                      ?<Search onMovieClick={this.onMovieClick}
-                        routeChange={this.routeChange}/>
-                      :(this.state.route==='admin')
-                        ?<Admin/>
-                        :<ViewallGenre routeChange={this.routeChange} 
-                          genre={this.state.genre} 
-                          genreChange={this.genreChange}
-                          userId={this.state.user.id}
-                          onMovieClick={this.onMovieClick}
-                          movieId={this.state.movie.Id}
-                          isSignedIn={this.state.isSignedIn}
-                          // hoverChange={this.hoverChange}
-                          // hover={this.state.hover}
-                          />
-                          }
-      </div>
+      // <div>
+      //     <Navigation isSignedIn={this.state.isSignedIn} userType={this.state.user.role} route={this.state.route} routeChange={this.routeChange} userAuth={this.userAuth}/>
+      //     {(this.state.route==='home')
+      //     ?<div>
+      //       {moviedivs}
+      //     </div>
+      //     :(this.state.route==='similarmovies')
+      //         ?<Viewmovieinfo movie={this.state.movie} routeChange={this.routeChange} genreChange={this.genreChange}
+      //           onMovieClick={this.onMovieClick} userId={this.state.user.id} isSignedIn={this.state.isSignedIn}/>
+      //         :(this.state.route==='rate')
+      //           ?<Ratemovie Title={this.state.movie.Title} movieId={this.state.movie.Id} routeChange={this.routeChange} userId={this.state.user.id} isSignedIn={this.state.isSignedIn}/>
+      //           :(this.state.route==='signin')
+      //             ?<SignIn routeChange={this.routeChange} getUser={this.getUser} userAuth={this.userAuth}/>
+      //             :(this.state.route==='signup')
+      //               ?<Register routeChange={this.routeChange} getUser={this.getUser} userAuth={this.userAuth}/>
+      //               :(this.state.route==='search')
+      //                 ?<Search onMovieClick={this.onMovieClick}
+      //                   routeChange={this.routeChange}/>
+      //                 :(this.state.route==='admin')
+      //                   ?<Admin/>
+      //                   :<ViewallGenre routeChange={this.routeChange} 
+      //                     genre={this.state.genre} 
+      //                     genreChange={this.genreChange}
+      //                     userId={this.state.user.id}
+      //                     onMovieClick={this.onMovieClick}
+      //                     movieId={this.state.movie.Id}
+      //                     isSignedIn={this.state.isSignedIn}
+      //                     // hoverChange={this.hoverChange}
+      //                     // hover={this.state.hover}
+      //                     />
+      //                     }
+      // </div>
+      <>
+      <Navigation isSignedIn={true} userType="Admin" route="profile" routeChange={this.routeChange} userAuth={this.userAuth}/>
+      <Profile user={this.state.user}/>
+      </>
       // <Tooltip classes='f6 pointer' title='This is tit...' tip='This is title with long text complete'/>
       // <Ratemovie Title='movie title here'/>
       // <Table contents={this.state.tableContent}/>

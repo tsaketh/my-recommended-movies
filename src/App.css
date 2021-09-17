@@ -146,6 +146,12 @@ th {
   justify-content: flex-start;
   align-items: flex-end;
 }
+.my-profile {
+  border-style: solid;
+  border-color: darkorange;
+  background-color: whitesmoke;
+  border-radius: 50%;
+}
 
 /* .toaster-inner {
   position: relative;
