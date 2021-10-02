@@ -11,7 +11,8 @@ const Form = (props) => {
                         <input 
                             className="b ph3 pv2 input-reset ba b--black bg-transparent grow pointer f6 dib" 
                             type="submit" 
-                            value="Create" 
+                            disabled={props.disableSubmit}
+                            value={props?.submitLabel || "Create"} 
                             onClick={props.onFormSubmit}/>
                         <input 
                             className="b ph3 pv2 input-reset ba b--black bg-transparent grow pointer f6 dib" 

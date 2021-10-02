@@ -11,6 +11,7 @@ import Navigation from './Components/Navigation';
 import SignIn from './Containers/SignIn';
 import Register from './Containers/Register';
 import Search from './Containers/Search';
+import Profile from './Containers/Profile';
 // import Table from './Components/Table';
 // import PageMenu from './Components/PageMenu';
 import Admin from './Containers/Admin';
@@ -24,6 +25,13 @@ class App extends Component {
       genre: '', 
       movie: {}, 
       isSignedIn: false, 
+      // user: {
+      //   id: 680,
+      //   name: "test user 6",
+      //   email: "test.user6@mail.com",
+      //   role: "Admin",
+      //   avatar_id: null
+      // }
       user: {}
       // hover: 'false'
     }
@@ -91,7 +99,7 @@ class App extends Component {
     })
     return(
       <div>
-          <Navigation isSignedIn={this.state.isSignedIn} userType={this.state.user.role} route={this.state.route} routeChange={this.routeChange} userAuth={this.userAuth}/>
+          <Navigation isSignedIn={this.state.isSignedIn} userType={this.state.user.role} route={this.state.route} routeChange={this.routeChange} userAuth={this.userAuth} avatarId={this.state.user.avatar_id}/>
           {(this.state.route==='home')
           ?<div>
             {moviedivs}
@@ -110,7 +118,9 @@ class App extends Component {
                         routeChange={this.routeChange}/>
                       :(this.state.route==='admin')
                         ?<Admin/>
-                        :<ViewallGenre routeChange={this.routeChange} 
+                        :(this.state.route==='profile')
+                          ?<Profile user={this.state.user} getUser={this.getUser}/>
+                          :<ViewallGenre routeChange={this.routeChange} 
                           genre={this.state.genre} 
                           genreChange={this.genreChange}
                           userId={this.state.user.id}
@@ -122,6 +132,10 @@ class App extends Component {
                           />
                           }
       </div>
+      // <>
+      // <Navigation  isSignedIn={this.state.isSignedIn} userType={this.state.user.role} route={this.state.route} routeChange={this.routeChange} userAuth={this.userAuth}/>
+      // <Profile user={this.state.user} getUser={this.getUser}/>
+      // </>
       // <Tooltip classes='f6 pointer' title='This is tit...' tip='This is title with long text complete'/>
       // <Ratemovie Title='movie title here'/>
       // <Table contents={this.state.tableContent}/>

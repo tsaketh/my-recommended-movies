@@ -99,6 +99,17 @@ th {
   margin-left: auto;
   margin-right: 2%;
 }
+.pull-left {
+  margin-right: auto;
+  margin-left: 2%;
+}
+.profile-item-links {
+  font-size: 0.75rem;
+}
+.avatar-selected {
+  /* border: solid 2px lightseagreen; */
+  background-color: lightseagreen;
+}
 .admin-toolbar {
   display: flex;
   justify-content: flex-end;
@@ -145,6 +156,23 @@ th {
   display: flex;
   justify-content: flex-start;
   align-items: flex-end;
+}
+.my-profile {
+  border-style: solid;
+  border-color: darkorange;
+  background-color: whitesmoke;
+  border-radius: 50%;
+}
+.scroll {
+  margin-top: 2px;
+  margin-bottom: 2px;
+  display: block;
+  overflow-y: scroll;
+  max-height: 20vh;
+}
+
+.scroll::-webkit-scrollbar {
+  display: none;
 }
 
 /* .toaster-inner {
