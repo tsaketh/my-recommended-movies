@@ -37,7 +37,7 @@ constructor(){
     }
 }
 componentDidMount(){
-    if (this.state.activeOption==='Users') {
+    if (this.state.activeOption==='Users') { //floating-reaches-01708.herokuapp.com
         fetch(`https://floating-reaches-01708.herokuapp.com/users?offset=${(this.state.currentPage-1)*this.state.pageLimit}&limit=${this.state.pageLimit}`)
             .then(res => res.json())
             .then(users => {this.setState({tableContent: users.results, totalRecords: users.totalRecords})})
@@ -165,13 +165,17 @@ createMovie=()=>{
 }
 toggleToasterState=()=>{
     this.setState({toasterState: !this.state.toasterState})
+    setTimeout(() => {
+        this.setState({toasterState: !this.state.toasterState})
+        this.setState({movieCreationStatus: ''})
+    }, 2000);
 }
 toggleConfirmationPopupState=()=>{
     this.setState({confirmationPopupState: !this.state.confirmationPopupState})
 }
-setOptionClickedFor=(email, role)=>{
+setOptionClickedFor=(id, role)=>{
     this.setState({optionClickedFor: {
-        'email': email,
+        'id': id,
         'role': role
     }})
     this.toggleConfirmationPopupState()
@@ -183,7 +187,7 @@ changeAccess=()=>{
             'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-            email: this.state.optionClickedFor.email,
+            id: this.state.optionClickedFor.id,
             role: (this.state.optionClickedFor.role==='User')?'Admin':'User'
         })
     })
@@ -218,7 +222,7 @@ render(){
                         <Table contents={this.state.tableContent} onOptionClick={this.setOptionClickedFor}/>
                     </div>}
                 <Modal modalState={this.state.confirmationPopupState} toggle={this.toggleConfirmationPopupState}>
-                    <Confirmation legend="Confirmation required" label={`Are you sure to change access for user with email ${this.state.optionClickedFor.email}`} onConfirmation={this.changeAccess}/>
+                    <Confirmation legend="Confirmation required" label={`Are you sure to change access for user with id ${this.state.optionClickedFor.id}`} onConfirmation={this.changeAccess}/>
                 </Modal>
                 <PaginationTools totalRecords={this.state.totalRecords} pageLimit={this.state.pageLimit} onPageSelect={this.onPageSelect} onPageLimitChange={this.onPageLimitChange} currentPage={this.state.currentPage}/>
             </div>

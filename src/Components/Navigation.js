@@ -1,7 +1,7 @@
 import React from 'react';
 import MYprofile from './MYprofile.png';
 
-const Navigation = ({isSignedIn, userType, route, routeChange, userAuth}) => {
+const Navigation = ({isSignedIn, userType, route, routeChange, userAuth, avatarId}) => {
     return (
         <nav className="flex-grow pa flex items-center justify-end bb b--white-10 bg-black my-top">
             {/* <img className='bg-white' src={icon} alt="" /> */}
@@ -32,9 +32,9 @@ const Navigation = ({isSignedIn, userType, route, routeChange, userAuth}) => {
                 }}
                 className="f6 dib white bg-animate hover-bg-white hover-black no-underline pv2 ph4 br-pill ba b--white-20 pointer" 
                 >Sign Out</p>:<></>}
-            {(isSignedIn)
+            {(isSignedIn && route!=='profile')
                 ?<div className="mh3 mt3 mb2">
-                    <img className="my-profile pointer" src={MYprofile} alt="" width="30px" height="30px"
+                    <img className="my-profile pointer" src={(avatarId)?`https://robohash.org/${avatarId}?set=set2&size=30x30`:MYprofile} alt="" width="30px" height="30px"
                         onClick = {()=>routeChange('profile')}/>
                 </div>
                 :<></>}
