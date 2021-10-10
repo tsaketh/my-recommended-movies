@@ -49,10 +49,10 @@ const PaginationTools = ({totalRecords, pageLimit, onPageSelect, onPageLimitChan
             <div>
                 <span className="f6 pt1 pr2">{`${(currentPage-1)*pageLimit+1} - ${(currentPage*pageLimit>totalRecords)?totalRecords:currentPage*pageLimit} of ${totalRecords}`}</span>
                 <select name="Numrecords" id="dropdown_num_records" defaultValue={pageLimit} onChange={onPageLimitChange}>
-                    <option value="10">10</option>
-                    <option value="20">20</option>
-                    <option value="50">50</option>
-                    <option value="100">100</option>
+                    <option value={10}>10</option>
+                    <option value={20}>20</option>
+                    <option value={30}>50</option>
+                    <option value={100}>100</option>
                 </select>
             </div>
         </div>

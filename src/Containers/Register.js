@@ -68,9 +68,8 @@ class Register extends Component{
                 if (data === "The email already exists.") {
                     this.setState({errors: data});
                 } else {
-                    this.props.userAuth(true);
                     this.props.getUser(data);
-                    this.props.routeChange('home');
+                    this.props.userAuth(true);
                 }
             }).catch(e => {
                 alert(e+"\r\nServer could be down due to maintanance.\r\nTry again after sometime.\r\nElse try after troubleshooting your network connection")
@@ -81,7 +80,6 @@ class Register extends Component{
         }
     }
     render(){
-        // const {onRouteChange} = this.props;
         return(
             <article className="br2 ba bg-light-green dark-gray b--black-10 mv6 w-100 w-50-m w-25-l mw6 center shadow-5">
                 <main className="pa4 black-80">

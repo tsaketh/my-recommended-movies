@@ -1,4 +1,5 @@
 import React, {Component} from  'react';
+import { Link, withRouter } from 'react-router-dom';
 import Validations from '../Components/Validations';
 
 class SignIn extends Component {
@@ -37,15 +38,13 @@ class SignIn extends Component {
                 data === "Error Logging in. Please check your network and try again") {
                 this.setState({errors: data});
             } else {
-                this.props.userAuth(true);
                 this.props.getUser(data);
-                this.props.routeChange('home');
+                this.props.userAuth(true);
             }
         }).catch(alert);
     }
-    // const { onRouteChange } = this.props;
     render(){
-        const {routeChange} = this.props;
+        const {location} = this.props;
         return (
             <article className="br2 ba bg-light-green dark-gray b--black-10 mv6 w-100 w-50-m w-25-l mw6 center shadow-5">
                 <main className="pa4 black-80">
@@ -75,9 +74,10 @@ class SignIn extends Component {
                                 type="submit" 
                                 value="Sign in" 
                                 onClick={this.authenticateUser}/>
-                            <p 
-                                className="f6 link dim black db pointer"
-                                onClick={()=>{routeChange('signup')}}>Sign up</p>
+                            <Link to={{pathname: "/signup", state: {from: (location.pathname !== "/signin" && location.pathname) || (location.state?.from || "/")}}}>
+                                <p 
+                                    className="f6 link dim black db pointer">Sign up</p>
+                            </Link>
                         </div>
                         {/* <div className="lh-copy mt3 my-center">
                             <p 
@@ -93,4 +93,4 @@ class SignIn extends Component {
     
 }
 
-export default SignIn;
+export default withRouter(SignIn);

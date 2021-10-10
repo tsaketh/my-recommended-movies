@@ -12,22 +12,6 @@ class Search extends Component {
             searchfield: ''
         }
     }
-    // componentDidMount(){
-    //     if (this.state.searchfield.length>=3) {
-    //         fetch(`https://127.0.0.1:7909/search/${this.state.searchfield}`)
-    //         .then(response => response.json())
-    //         .then(users => this.setState({robots: users}))
-    //         .finally(this.setState({searchfieldp:this.state.searchfield}))
-    //     }
-    // }
-    // componentDidUpdate(){
-    //     if (this.state.searchfield.length>=3 && this.state.searchfield!==this.state.searchfieldp) {
-    //         fetch(`https://127.0.0.1:7909/search/${this.state.searchfield}`)
-    //         .then(response => response.json())
-    //         .then(users => this.setState({robots: users}))
-    //         .finally(this.setState({searchfieldp:this.state.searchfield}))
-    //     }
-    // }
     loadResults=()=>{
         if (this.state.searchfield.length>=3) {
             fetch(`https://ts-recommender-api-11798.herokuapp.com/search/${this.state.searchfield}`)
@@ -52,8 +36,7 @@ class Search extends Component {
                         ?<div>
                             <h3 className='pa3 f6'>Enter seach text in search bar and press "Enter" to view results</h3>
                         </div>:<Scroll>
-                    <CardContainer movies = {this.state.robots} classes = 'tc dib' onMovieClick={this.props.onMovieClick}
-                    routeChange={this.props.routeChange}/>
+                    <CardContainer movies = {this.state.robots} classes = 'tc dib'/>
                 </Scroll>}
             </div>
         )

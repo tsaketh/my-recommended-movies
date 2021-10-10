@@ -13,7 +13,6 @@ const ChangePasswordForm = ({toggleChangePasswordPopup, onChangePasswordFormSubm
                     className="pa2 input-reset ba bg-transparent hover-bg-black hover-white w-100" 
                     type="password" name="old-password"  id="old-password" 
                     onChange = {onOldPasswordChange}/>
-                {/* <Validations errors = {this.state.nameError}/> */}
             </div>
             <div className="mt3">
                 <label className="db fw6 lh-copy f6 black-80" htmlFor="new-password">New Password*</label>
@@ -22,7 +21,6 @@ const ChangePasswordForm = ({toggleChangePasswordPopup, onChangePasswordFormSubm
                     type="password" name="new-password"  id="new-password" 
                     onChange = {onNewPasswordChange}
                     />
-                {/* <Validations errors = {this.state.emailError}/> */}
             </div>
             <div className="mt3">
                 <label className="db fw6 lh-copy f6 black-80" htmlFor="confirm-password">Confirm Password*</label>

@@ -28,7 +28,6 @@ const CreateMovieForm = ({toggle, setMovieTitle, setMovieGenre, setMovieYear, on
                         type="text" name="year"  id="year"
                         onChange={setMovieYear}/>
                 </div>
-                {/* <label className="pa0 ma0 lh-copy f6 pointer"><input type="checkbox" /> Remember me</label> */}
             </fieldset>
         </Form>
     )

@@ -43,7 +43,6 @@ const Table = ({contents, onOptionClick}) => {
             <thead>
                 <tr className="table-headers">
                     {cols}
-                    {/* <th className="table-row-options"></th> */}
                 </tr>
             </thead>
             <tbody>

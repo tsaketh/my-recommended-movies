@@ -11,7 +11,6 @@ class Profile extends Component {
     constructor(){
         super();
         this.state={
-            activeOption: 'General Information',
             editUserModal: false,
             changePasswordModal: false,
             editName: "",
@@ -42,11 +41,6 @@ class Profile extends Component {
                 editEmail: this.props.user.email,
                 editAvatar: this.props.user.avatar_id
             }
-        )
-    }
-    onOptionSelected=(option)=>{
-        this.setState(
-            {activeOption: option}
         )
     }
     toggleEditUserPopup=()=>{
@@ -184,7 +178,7 @@ class Profile extends Component {
         )
         setTimeout(() => {
             this.setState(
-                {editUserStatusDisplay: !this.state.editUserStatusDisplay}
+                {editUserStatusDisplay: false}
             ) 
         }, 2000);
     }
@@ -194,7 +188,7 @@ class Profile extends Component {
         )
         setTimeout(() => {
             this.setState(
-                {changePasswordStatusDisplay: !this.state.changePasswordStatusDisplay}
+                {changePasswordStatusDisplay: false}
             ) 
         }, 2000);
     }
@@ -208,10 +202,10 @@ class Profile extends Component {
     render(){
         return(
             <div className="flex">
-                <PageMenu Options={['General Information', 'Settings']} active={this.state.activeOption} onOptionSelected={this.onOptionSelected}/>
+                <PageMenu Options={['General Information', 'Settings']} active={this.props.activeOption}/>
                 <div style={{width: '100%', height: '100%'}}>
                     <div>
-                        {(this.state.activeOption==='General Information')
+                        {(this.props.activeOption==='General Information')
                             ?<div>
                                 <div className="flex justify-end tc mt3">
                                     <Actionbutton action="Edit" takeAction={this.toggleEditUserPopup}/>

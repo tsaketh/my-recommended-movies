@@ -20,12 +20,6 @@ const Form = (props) => {
                             value="Cancel" 
                             onClick={props.toggle}/>
                     </div>
-                    {/* <div className="lh-copy mt3 my-center">
-                        <p 
-                            className="f6 link dim black db pointer"
-                            onClick={()=>{onRouteChange('signup')}}>Sign up</p> */}
-                        {/* <a href="#0" className="f6 link dim black db">Forgot your password?</a> */}
-                    {/* </div> */}
                 </div>
             </main>
         </article>
