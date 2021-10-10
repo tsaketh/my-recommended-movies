@@ -1,7 +1,8 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import 'tachyons';
 
-const PageMenu = ({Options, active, onOptionSelected}) => {
+const PageMenu = ({Options, active}) => {
     const opts = Options.map((element)=>{
         let optionStyle = {listStyle: 'none',
             paddingTop: '10px',
@@ -19,11 +20,13 @@ const PageMenu = ({Options, active, onOptionSelected}) => {
             markerStyle.display='inline-block';
         }
         return (
-            <li style={optionStyle} className="flex justify-between pointer"
-                onClick={()=>{onOptionSelected(element)}} key={element}>
-                <span>{element}</span>
-                <div style={markerStyle}>|</div>
-            </li>
+            <Link to={`/${element.toLowerCase().replace(' ','')}`} key={element}>
+                <li style={optionStyle} className="flex justify-between pointer no-underline"
+                    key={element}>
+                    <span>{element}</span>
+                    <div style={markerStyle}>|</div>
+                </li>
+            </Link>
         )
     })
     return(

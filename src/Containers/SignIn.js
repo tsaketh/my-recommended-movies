@@ -1,4 +1,5 @@
 import React, {Component} from  'react';
+import { withRouter } from 'react-router-dom';
 import Validations from '../Components/Validations';
 
 class SignIn extends Component {
@@ -37,8 +38,8 @@ class SignIn extends Component {
                 data === "Error Logging in. Please check your network and try again") {
                 this.setState({errors: data});
             } else {
-                this.props.userAuth(true);
                 this.props.getUser(data);
+                this.props.userAuth(true);
                 this.props.routeChange('home');
             }
         }).catch(alert);
@@ -93,4 +94,4 @@ class SignIn extends Component {
     
 }
 
-export default SignIn;
+export default withRouter(SignIn);

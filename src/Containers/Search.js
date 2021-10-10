@@ -52,8 +52,7 @@ class Search extends Component {
                         ?<div>
                             <h3 className='pa3 f6'>Enter seach text in search bar and press "Enter" to view results</h3>
                         </div>:<Scroll>
-                    <CardContainer movies = {this.state.robots} classes = 'tc dib' onMovieClick={this.props.onMovieClick}
-                    routeChange={this.props.routeChange}/>
+                    <CardContainer movies = {this.state.robots} classes = 'tc dib'/>
                 </Scroll>}
             </div>
         )

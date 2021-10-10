@@ -1,21 +1,16 @@
 import React, { Component } from 'react';
 import './App.css';
 import 'tachyons';
-// import CardContainer from './Containers/CardContainer';
-// import Hscroll from './Components/Hscroll';
 import Genremovies from './Containers/Genremovies';
 import ViewallGenre from './Containers/ViewallGenre';
 import Viewmovieinfo from './Containers/Viewmovieinfo';
-import Ratemovie from './Containers/Ratemovie';
 import Navigation from './Components/Navigation';
 import SignIn from './Containers/SignIn';
 import Register from './Containers/Register';
 import Search from './Containers/Search';
 import Profile from './Containers/Profile';
-// import Table from './Components/Table';
-// import PageMenu from './Components/PageMenu';
 import Admin from './Containers/Admin';
-// import Tooltip from './Components/Tooltip';
+import { Redirect, Route, Switch, withRouter } from 'react-router-dom';
 
 class App extends Component {
   constructor(){
@@ -33,25 +28,8 @@ class App extends Component {
       //   avatar_id: null
       // }
       user: {}
-      // hover: 'false'
     }
   }
-  // componentDidMount() {
-  //   if (this.props.genre === 'popularmovies') {
-  //       fetch(`http://127.0.0.1:6941/${this.props.genre}`)
-  //       .then(response => response.json())
-  //       .then(movies => this.setState({movies: movies[0]}))
-  //   } else if(this.props.genre === 'recommendations') {
-  //       fetch(`http://127.0.0.1:6941/${this.props.genre}/${this.props.userId}`)
-  //       .then(response => response.json())
-  //       .then(movies => this.setState({movies: movies[0]}))
-  //   } else {
-  //       fetch(`http://127.0.0.1:6941/movies/${this.props.genre}`)
-  //       .then(response => response.json())
-  //       .then(movies => this.setState({movies: movies[0]}))
-  //   }
-  // }
-
   userAuth =(value)=>{
     this.setState({isSignedIn:value})
     if(!value){
@@ -70,9 +48,6 @@ class App extends Component {
   getUser = (user) => {
     this.setState({user: user})
   }
-  // hoverChange = (value) => {
-  //   this.setState(value)
-  // }
 
   render(){
     const genres = ['recommendations', 
@@ -89,58 +64,110 @@ class App extends Component {
     const moviedivs = genres.map((element) => {
       return <Genremovies userId={this.state.user.id} 
                 genre={element} 
-                routeChange={this.routeChange} 
-                genreChange={this.genreChange}
-                onMovieClick={this.onMovieClick}
                 isSignedIn={this.state.isSignedIn}
-                // hoverChange={this.hoverChange}
-                // hover={this.state.hover}
-      />
+                key={element}
+                // location={this.props.location}
+                />
     })
     return(
       <div>
-          <Navigation isSignedIn={this.state.isSignedIn} userType={this.state.user.role} route={this.state.route} routeChange={this.routeChange} userAuth={this.userAuth} avatarId={this.state.user.avatar_id}/>
-          {(this.state.route==='home')
-          ?<div>
-            {moviedivs}
-          </div>
-          :(this.state.route==='similarmovies')
-              ?<Viewmovieinfo movie={this.state.movie} routeChange={this.routeChange} genreChange={this.genreChange}
-                onMovieClick={this.onMovieClick} userId={this.state.user.id} isSignedIn={this.state.isSignedIn}/>
-              :(this.state.route==='rate')
-                ?<Ratemovie Title={this.state.movie.Title} movieId={this.state.movie.Id} routeChange={this.routeChange} userId={this.state.user.id} isSignedIn={this.state.isSignedIn}/>
-                :(this.state.route==='signin')
-                  ?<SignIn routeChange={this.routeChange} getUser={this.getUser} userAuth={this.userAuth}/>
-                  :(this.state.route==='signup')
-                    ?<Register routeChange={this.routeChange} getUser={this.getUser} userAuth={this.userAuth}/>
-                    :(this.state.route==='search')
-                      ?<Search onMovieClick={this.onMovieClick}
-                        routeChange={this.routeChange}/>
-                      :(this.state.route==='admin')
-                        ?<Admin/>
-                        :(this.state.route==='profile')
-                          ?<Profile user={this.state.user} getUser={this.getUser}/>
-                          :<ViewallGenre routeChange={this.routeChange} 
-                          genre={this.state.genre} 
-                          genreChange={this.genreChange}
-                          userId={this.state.user.id}
-                          onMovieClick={this.onMovieClick}
-                          movieId={this.state.movie.Id}
-                          isSignedIn={this.state.isSignedIn}
-                          // hoverChange={this.hoverChange}
-                          // hover={this.state.hover}
-                          />
-                          }
+        {this.state.isSignedIn?<Redirect to={this.props.location.state?.from || this.props.location?.pathname}/>:<></>}
+        <Switch>
+          <Route exact path="/movie/:movieId">
+            <Navigation isSignedIn={this.state.isSignedIn} userType={this.state.user.role} route='movie' routeChange={this.routeChange} userAuth={this.userAuth} avatarId={this.state.user.avatar_id}/>
+            <Viewmovieinfo routeChange={this.routeChange} genreChange={this.genreChange}
+              onMovieClick={this.onMovieClick} userId={this.state.user.id} isSignedIn={this.state.isSignedIn}
+              // location={this.props.location}
+              />
+          </Route>
+          <Route exact path="/signin">
+            <Navigation isSignedIn={this.state.isSignedIn} userType={this.state.user.role} route="signin" routeChange={this.routeChange} userAuth={this.userAuth} avatarId={this.state.user.avatar_id}/>
+            <SignIn routeChange={this.routeChange} getUser={this.getUser} userAuth={this.userAuth}/>
+          </Route>
+          <Route exact path="/signup">
+            <Navigation isSignedIn={this.state.isSignedIn} userType={this.state.user.role} route="signup" routeChange={this.routeChange} userAuth={this.userAuth} avatarId={this.state.user.avatar_id}/>
+            <Register routeChange={this.routeChange} getUser={this.getUser} userAuth={this.userAuth}/>
+          </Route>
+          <Route exact path="/search">
+            <Navigation isSignedIn={this.state.isSignedIn} userType={this.state.user.role} route="search" routeChange={this.routeChange} userAuth={this.userAuth} avatarId={this.state.user.avatar_id}/>
+            <Search onMovieClick={this.onMovieClick} routeChange={this.routeChange}/>
+          </Route>
+          <Route exact path="/movies">
+            {!this.state.isSignedIn
+              ?<Redirect to={{pathname: "/signin", state: {from: this.props.location.pathname}}}/>
+              :<><Navigation isSignedIn={this.state.isSignedIn} userType={this.state.user.role} route="admin" routeChange={this.routeChange} userAuth={this.userAuth} avatarId={this.state.user.avatar_id}/>
+            <Admin activeOption="Movies" user={this.state.user}/></>}
+          </Route>
+          <Route exact path="/users">
+            {!this.state.isSignedIn
+              ?<Redirect to={{pathname: "/signin", state: {from: this.props.location.pathname}}}/>
+              :<><Navigation isSignedIn={this.state.isSignedIn} userType={this.state.user.role} route="admin" routeChange={this.routeChange} userAuth={this.userAuth} avatarId={this.state.user.avatar_id}/>
+            <Admin activeOption="Users" user={this.state.user}/></>}
+          </Route>
+          <Route exact path="/generalinformation">
+            {!this.state.isSignedIn
+              ?<Redirect to={{pathname: "/signin", state: {from: this.props.location.pathname}}}/>
+              :<><Navigation isSignedIn={this.state.isSignedIn} userType={this.state.user.role} route="profile" routeChange={this.routeChange} userAuth={this.userAuth} avatarId={this.state.user.avatar_id}/>
+            <Profile user={this.state.user} getUser={this.getUser} activeOption="General Information"/></>}
+          </Route>
+          <Route exact path="/settings">
+            {!this.state.isSignedIn
+              ?<Redirect to={{pathname: "/signin", state: {from: this.props.location.pathname}}}/>
+              :<><Navigation isSignedIn={this.state.isSignedIn} userType={this.state.user.role} route="profile" routeChange={this.routeChange} userAuth={this.userAuth} avatarId={this.state.user.avatar_id}/>
+            <Profile user={this.state.user} getUser={this.getUser} activeOption="Settings"/></>}
+          </Route>
+          <Route exact path="/">
+            <Navigation isSignedIn={this.state.isSignedIn} userType={this.state.user.role} route="home" routeChange={this.routeChange} userAuth={this.userAuth} avatarId={this.state.user.avatar_id}/>
+            <div>
+              {moviedivs}
+            </div>
+          </Route>
+          <Route exact path={"/:genre"}>
+            <Navigation isSignedIn={this.state.isSignedIn} userType={this.state.user.role} route="genre" routeChange={this.routeChange} userAuth={this.userAuth} avatarId={this.state.user.avatar_id}/>
+            <ViewallGenre userId={this.state.user.id}
+                        isSignedIn={this.state.isSignedIn}
+                        />
+          </Route>
+          <Route exact path={"/similarmovies/:similartomovieId"}>
+            <Navigation isSignedIn={this.state.isSignedIn} userType={this.state.user.role} route="similarmovies" routeChange={this.routeChange} userAuth={this.userAuth} avatarId={this.state.user.avatar_id}/>
+            <ViewallGenre userId={this.state.user.id}
+                        isSignedIn={this.state.isSignedIn}
+                        />
+          </Route>
+        </Switch>
+        {/* <Navigation isSignedIn={this.state.isSignedIn} userType={this.state.user.role} route={this.state.route} routeChange={this.routeChange} userAuth={this.userAuth} avatarId={this.state.user.avatar_id}/>
+        {(this.state.route==='home')
+        ?<div>
+          {moviedivs}
+        </div>
+        :(this.state.route==='similarmovies')
+            ?<Viewmovieinfo movie={this.state.movie} routeChange={this.routeChange} genreChange={this.genreChange}
+              onMovieClick={this.onMovieClick} userId={this.state.user.id} isSignedIn={this.state.isSignedIn}/>
+            :(this.state.route==='rate')
+              ?<Ratemovie Title={this.state.movie.Title} movieId={this.state.movie.Id} routeChange={this.routeChange} userId={this.state.user.id} isSignedIn={this.state.isSignedIn}/>
+              :(this.state.route==='signin')
+                ?<SignIn routeChange={this.routeChange} getUser={this.getUser} userAuth={this.userAuth}/>
+                :(this.state.route==='signup')
+                  ?<Register routeChange={this.routeChange} getUser={this.getUser} userAuth={this.userAuth}/>
+                  :(this.state.route==='search')
+                    ?<Search onMovieClick={this.onMovieClick}
+                      routeChange={this.routeChange}/>
+                    :(this.state.route==='admin')
+                      ?<Admin/>
+                      :(this.state.route==='profile')
+                        ?<Profile user={this.state.user} getUser={this.getUser}/>
+                        :<ViewallGenre routeChange={this.routeChange} 
+                        genre={this.state.genre} 
+                        genreChange={this.genreChange}
+                        userId={this.state.user.id}
+                        onMovieClick={this.onMovieClick}
+                        movieId={this.state.movie.Id}
+                        isSignedIn={this.state.isSignedIn}
+                        />
+                        } */}
       </div>
-      // <>
-      // <Navigation  isSignedIn={this.state.isSignedIn} userType={this.state.user.role} route={this.state.route} routeChange={this.routeChange} userAuth={this.userAuth}/>
-      // <Profile user={this.state.user} getUser={this.getUser}/>
-      // </>
-      // <Tooltip classes='f6 pointer' title='This is tit...' tip='This is title with long text complete'/>
-      // <Ratemovie Title='movie title here'/>
-      // <Table contents={this.state.tableContent}/>
     )
   }
 }
 
-export default App;
+export default withRouter(App);

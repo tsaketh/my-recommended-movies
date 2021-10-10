@@ -3,10 +3,10 @@ import 'tachyons';
 import Card from '../Components/Card';
 import Loader from '../Components/Loader';
 
-const CardContainer = ({movies, classes, onMovieClick, routeChange}) => {
+const CardContainer = ({movies, classes, genre}) => {
     const movieList = movies.map(({Id, Title, Genre, Year, ratings, avg}) => {
         return <Card Id = {Id} Title = {Title} rating = {avg} ratings = {ratings} Year = {Year} Genre = {Genre} 
-                    onMovieClick={onMovieClick} routeChange={routeChange}
+                    key={Id}
                     // hoverChange={hoverChange} hover={hover}
                 />
     });
@@ -14,7 +14,7 @@ const CardContainer = ({movies, classes, onMovieClick, routeChange}) => {
     return (
         <div>
             {(movies.length>0)?
-                <div className={classes}>
+                <div className={classes} id={genre}>
                     {movieList}
                 </div>:<Loader/>}
         </div>

@@ -21,7 +21,6 @@ constructor(){
             // {Id: "262", Title: "Black Widow", Rating: "2.85", Ratings: "25", Year: "2021", Genre: "Comedy|Action|Romance"}
             // "No Results Found"
         ],
-        activeOption: 'Users',
         searchfield: '',
         totalRecords: 0,
         currentPage: 1,
@@ -37,22 +36,27 @@ constructor(){
     }
 }
 componentDidMount(){
-    if (this.state.activeOption==='Users') { //floating-reaches-01708.herokuapp.com
-        fetch(`https://floating-reaches-01708.herokuapp.com/users?offset=${(this.state.currentPage-1)*this.state.pageLimit}&limit=${this.state.pageLimit}`)
-            .then(res => res.json())
-            .then(users => {this.setState({tableContent: users.results, totalRecords: users.totalRecords})})
-            .catch(err => {alert("Unkown error occured while fetching users")})
-    } else {
-        fetch(`https://ts-recommender-api-11798.herokuapp.com/movies?offset=${(this.state.currentPage-1)*this.state.pageLimit+1}&limit=${this.state.pageLimit}`)
-            .then(res => res.json())
-            .then(movies => {this.setState({tableContent: movies.results, totalRecords: movies.totalRecords[0]})})
-            .catch(err => {alert("Unknown error occured while fetching users")})   
+    if (this.props.user.role==="Admin") {
+        if (this.props.activeOption==='Users') { //floating-reaches-01708.herokuapp.com
+            fetch(`https://floating-reaches-01708.herokuapp.com/users?offset=${(this.state.currentPage-1)*this.state.pageLimit}&limit=${this.state.pageLimit}`)
+                .then(res => res.json())
+                .then(users => {this.setState({tableContent: users.results, totalRecords: users.totalRecords})})
+                .catch(err => {alert("Unkown error occured while fetching users")})
+        } else {
+            fetch(`https://ts-recommender-api-11798.herokuapp.com/movies?offset=${(this.state.currentPage-1)*this.state.pageLimit+1}&limit=${this.state.pageLimit}`)
+                .then(res => res.json())
+                .then(movies => {this.setState({tableContent: movies.results, totalRecords: movies.totalRecords[0]})})
+                .catch(err => {alert("Unknown error occured while fetching users")})   
+        }
     }
 }
 
 componentDidUpdate(prevProps, prevState){
-    if (prevState.activeOption!==this.state.activeOption || prevState.pageLimit!==this.state.pageLimit || prevState.currentPage!==this.state.currentPage || prevState.movieCreationStatus!==this.state.movieCreationStatus) {
-        if (this.state.activeOption==='Users') {
+    if (this.props.user.role==="Admin" && (prevProps.activeOption!==this.props.activeOption || prevState.pageLimit!==this.state.pageLimit || prevState.currentPage!==this.state.currentPage || prevState.movieCreationStatus!==this.state.movieCreationStatus)) {
+        if (prevProps.activeOption!==this.props.activeOption) {
+            this.setState({currentPage: 1, pageLimit: 10, searchfield: ''})
+        }
+        if (this.props.activeOption==='Users') {
             fetch(`https://floating-reaches-01708.herokuapp.com/users?offset=${(this.state.currentPage-1)*this.state.pageLimit}&limit=${this.state.pageLimit}&search=${this.state.searchfield}`)
                 .then(res => res.json())
                 .then(users => {this.setState({tableContent: users.results, totalRecords: users.totalRecords})})
@@ -86,7 +90,7 @@ loadResults=()=>{
         //     tableContentSearched: results
         // })
         this.setState({currentPage: 1})
-        if (this.state.activeOption==='Users') {
+        if (this.props.activeOption==='Users') {
             fetch(`https://floating-reaches-01708.herokuapp.com/users?offset=${(this.state.currentPage-1)*this.state.pageLimit}&limit=${this.state.pageLimit}&search=${this.state.searchfield}`)
                 .then(res => res.json())
                 .then(users => {this.setState({tableContent: users.results, totalRecords: users.totalRecords})})
@@ -98,7 +102,7 @@ loadResults=()=>{
                 .catch(err => {alert("Unknown error occured while fetching users")})   
         }        
     } else {
-        if (this.state.activeOption==='Users') {
+        if (this.props.activeOption==='Users') {
             fetch(`https://floating-reaches-01708.herokuapp.com/users?offset=${(this.state.currentPage-1)*this.state.pageLimit}&limit=${this.state.pageLimit}`)
                 .then(res => res.json())
                 .then(users => {this.setState({tableContent: users.results, totalRecords: users.totalRecords})})
@@ -116,11 +120,11 @@ onSearch=(event)=>{
         {searchfield: event.target.value}
     )
 }
-onOptionSelected=(option)=>{
-    this.setState(
-        {activeOption: option}
-    )
-}
+// onOptionSelected=(option)=>{
+//     this.setState(
+//         {activeOption: option}
+//     )
+// }
 onPageSelect=(page)=>{
     this.setState(
         {currentPage: page}
@@ -166,7 +170,7 @@ createMovie=()=>{
 toggleToasterState=()=>{
     this.setState({toasterState: !this.state.toasterState})
     setTimeout(() => {
-        this.setState({toasterState: !this.state.toasterState})
+        this.setState({toasterState: false})
         this.setState({movieCreationStatus: ''})
     }, 2000);
 }
@@ -201,32 +205,36 @@ changeAccess=()=>{
 }
 render(){
     return(
-        <div className="flex">
-            <PageMenu Options={['Users', 'Movies']} active={this.state.activeOption} onOptionSelected={this.onOptionSelected}/>
-            <div style={{width: '100%', height: '100%'}}>
-                <div className="flex justify-end tc">
-                    <div style={{width: '50vw', display: 'flex'}}>
-                        <SearchBar searchChange={this.onSearch} loadResults={this.loadResults}/>
-                        {(this.state.activeOption==='Movies')?<Actionbutton action='Create Movie' takeAction={this.toggleModalState}/>:<></>}
+        <>
+           {(this.props.user.role==="Admin")?<div className="flex">
+                <PageMenu Options={['Users', 'Movies']} active={this.props.activeOption}/>
+                <div style={{width: '100%', height: '100%'}}>
+                    <div className="flex justify-end tc">
+                        <div style={{width: '50vw', display: 'flex'}}>
+                            <SearchBar searchChange={this.onSearch} loadResults={this.loadResults}/>
+                            {(this.props.activeOption==='Movies')?<Actionbutton action='Create Movie' takeAction={this.toggleModalState}/>:<></>}
+                        </div>
                     </div>
+                    <Modal modalState={this.state.modalState} toggle={this.toggleModalState}>
+                        <CreateMovieForm toggle={this.toggleModalState} setMovieTitle={this.setMovieTitle} setMovieGenre={this.setMovieGenre} setMovieYear={this.setMovieYear} onFormSubmit={this.createMovie}/>
+                    </Modal>
+                    <Toaster toasterState={this.state.toasterState} toggle={this.toggleToasterState} message={this.state.movieCreationStatus}/>
+                    {(this.state.totalRecords==0)
+                        ?<div className = 'tc' style={{height: '70vh', paddingTop: '22vh'}}>
+                            <h3 className='f2'>No Results Found</h3>
+                        </div>
+                        :<div className="table-scroll tc">
+                            <Table contents={this.state.tableContent} onOptionClick={this.setOptionClickedFor}/>
+                        </div>}
+                    <Modal modalState={this.state.confirmationPopupState} toggle={this.toggleConfirmationPopupState}>
+                        <Confirmation legend="Confirmation required" label={`Are you sure to change access for user with id ${this.state.optionClickedFor.id}`} onConfirmation={this.changeAccess}/>
+                    </Modal>
+                    <PaginationTools totalRecords={this.state.totalRecords} pageLimit={this.state.pageLimit} onPageSelect={this.onPageSelect} onPageLimitChange={this.onPageLimitChange} currentPage={this.state.currentPage}/>
                 </div>
-                <Modal modalState={this.state.modalState} toggle={this.toggleModalState}>
-                    <CreateMovieForm toggle={this.toggleModalState} setMovieTitle={this.setMovieTitle} setMovieGenre={this.setMovieGenre} setMovieYear={this.setMovieYear} onFormSubmit={this.createMovie}/>
-                </Modal>
-                <Toaster toasterState={this.state.toasterState} toggle={this.toggleToasterState} message={this.state.movieCreationStatus}/>
-                {(this.state.totalRecords==0)
-                    ?<div className = 'tc' style={{height: '70vh', paddingTop: '22vh'}}>
-                        <h3 className='f2'>No Results Found</h3>
-                     </div>
-                    :<div className="table-scroll tc">
-                        <Table contents={this.state.tableContent} onOptionClick={this.setOptionClickedFor}/>
+            </div>:<div className = 'tc' style={{height: '70vh', paddingTop: '22vh'}}>
+                        <h3 className='f6'>You have lost or don't have permission to view this page. Please contact your administrator for access</h3>
                     </div>}
-                <Modal modalState={this.state.confirmationPopupState} toggle={this.toggleConfirmationPopupState}>
-                    <Confirmation legend="Confirmation required" label={`Are you sure to change access for user with id ${this.state.optionClickedFor.id}`} onConfirmation={this.changeAccess}/>
-                </Modal>
-                <PaginationTools totalRecords={this.state.totalRecords} pageLimit={this.state.pageLimit} onPageSelect={this.onPageSelect} onPageLimitChange={this.onPageLimitChange} currentPage={this.state.currentPage}/>
-            </div>
-        </div>
+        </>
     )
 }
 }
