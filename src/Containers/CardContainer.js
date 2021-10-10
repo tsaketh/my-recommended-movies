@@ -7,7 +7,6 @@ const CardContainer = ({movies, classes, genre}) => {
     const movieList = movies.map(({Id, Title, Genre, Year, ratings, avg}) => {
         return <Card Id = {Id} Title = {Title} rating = {avg} ratings = {ratings} Year = {Year} Genre = {Genre} 
                     key={Id}
-                    // hoverChange={hoverChange} hover={hover}
                 />
     });
 

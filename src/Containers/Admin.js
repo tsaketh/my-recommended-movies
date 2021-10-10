@@ -14,13 +14,7 @@ class Admin extends Component{
 constructor(){
     super()
     this.state={
-        tableContent:[
-            // {name: "test 1", email: "test1.user@mail.com"},
-            // {name: "test 2", email: "test2.user@mail.com"},
-            // {Id: "260", Title: "Star Wars: The last Jedi", Rating: "4.56", Ratings: "255", Year: "1998", Genre: "Comedy|Action|Fantasy|Thriller|Sci-Fi"},
-            // {Id: "262", Title: "Black Widow", Rating: "2.85", Ratings: "25", Year: "2021", Genre: "Comedy|Action|Romance"}
-            // "No Results Found"
-        ],
+        tableContent:[],
         searchfield: '',
         totalRecords: 0,
         currentPage: 1,
@@ -71,24 +65,6 @@ componentDidUpdate(prevProps, prevState){
 }
 loadResults=()=>{
     if (this.state.searchfield.trim().length>=3) {
-        // const results = this.state.tableContent.filter( content => {
-        //     // return users.name.toLowerCase().includes(this.state.searchfield.toLowerCase()) ||
-        //     //     users.email.toLowerCase().includes(this.state.searchfield.toLowerCase())
-        //     let flag = false;
-        //     for (const key in content) {
-        //         if (Object.hasOwnProperty.call(content, key)) {
-        //             const element = content[key];
-        //             flag=String(element).toLowerCase().includes(this.state.searchfield.toLowerCase())
-        //             if (flag) {
-        //                 return flag;
-        //             }
-        //         }
-        //     }
-        //     return flag;
-        // });
-        // this.setState({
-        //     tableContentSearched: results
-        // })
         this.setState({currentPage: 1})
         if (this.props.activeOption==='Users') {
             fetch(`https://floating-reaches-01708.herokuapp.com/users?offset=${(this.state.currentPage-1)*this.state.pageLimit}&limit=${this.state.pageLimit}&search=${this.state.searchfield}`)
@@ -120,11 +96,6 @@ onSearch=(event)=>{
         {searchfield: event.target.value}
     )
 }
-// onOptionSelected=(option)=>{
-//     this.setState(
-//         {activeOption: option}
-//     )
-// }
 onPageSelect=(page)=>{
     this.setState(
         {currentPage: page}

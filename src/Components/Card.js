@@ -11,16 +11,7 @@ const Card = ({Id, Title, rating, ratings, Year, Genre, onMovieClick, routeChang
     return (
         <Link to={`/movie/${Id}`}>
             <div key={Id} className= 'tc bg-light-green dib my-card br3 pa3 ma2 grow bw2 shadow-5 pointer'
-                id={`main_${Id}`}
-                onClick={()=>{onMovieClick({
-                    'Id': Id, 
-                    'Title': Title, 
-                    'rating': rating, 
-                    'ratings': ratings, 
-                    'Year': Year, 
-                    'Genre': Genre
-                })
-                routeChange('similarmovies')}}>
+                id={`main_${Id}`}>
                 <div id={`sub_${Id}`}>
                     <Tooltip tip={Title}>
                         <h2 className="text-ellipsis"
