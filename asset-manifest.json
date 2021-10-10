@@ -1,26 +1,26 @@
 {
   "files": {
-    "main.css": "/my-recommended-movies/static/css/main.872fa78d.chunk.css",
-    "main.js": "/my-recommended-movies/static/js/main.292bafd9.chunk.js",
-    "main.js.map": "/my-recommended-movies/static/js/main.292bafd9.chunk.js.map",
+    "main.css": "/my-recommended-movies/static/css/main.4250c740.chunk.css",
+    "main.js": "/my-recommended-movies/static/js/main.8a675793.chunk.js",
+    "main.js.map": "/my-recommended-movies/static/js/main.8a675793.chunk.js.map",
     "runtime-main.js": "/my-recommended-movies/static/js/runtime-main.b9be0459.js",
     "runtime-main.js.map": "/my-recommended-movies/static/js/runtime-main.b9be0459.js.map",
     "static/css/2.3c03f26f.chunk.css": "/my-recommended-movies/static/css/2.3c03f26f.chunk.css",
-    "static/js/2.c0be9953.chunk.js": "/my-recommended-movies/static/js/2.c0be9953.chunk.js",
-    "static/js/2.c0be9953.chunk.js.map": "/my-recommended-movies/static/js/2.c0be9953.chunk.js.map",
+    "static/js/2.01cbe96a.chunk.js": "/my-recommended-movies/static/js/2.01cbe96a.chunk.js",
+    "static/js/2.01cbe96a.chunk.js.map": "/my-recommended-movies/static/js/2.01cbe96a.chunk.js.map",
     "index.html": "/my-recommended-movies/index.html",
-    "precache-manifest.93bd06a747bc5f0b147fc0a15c792179.js": "/my-recommended-movies/precache-manifest.93bd06a747bc5f0b147fc0a15c792179.js",
+    "precache-manifest.400018452cfa2779cf5f7c024bccfc1d.js": "/my-recommended-movies/precache-manifest.400018452cfa2779cf5f7c024bccfc1d.js",
     "service-worker.js": "/my-recommended-movies/service-worker.js",
     "static/css/2.3c03f26f.chunk.css.map": "/my-recommended-movies/static/css/2.3c03f26f.chunk.css.map",
-    "static/css/main.872fa78d.chunk.css.map": "/my-recommended-movies/static/css/main.872fa78d.chunk.css.map",
-    "static/js/2.c0be9953.chunk.js.LICENSE.txt": "/my-recommended-movies/static/js/2.c0be9953.chunk.js.LICENSE.txt",
+    "static/css/main.4250c740.chunk.css.map": "/my-recommended-movies/static/css/main.4250c740.chunk.css.map",
+    "static/js/2.01cbe96a.chunk.js.LICENSE.txt": "/my-recommended-movies/static/js/2.01cbe96a.chunk.js.LICENSE.txt",
     "static/media/loading.png": "/my-recommended-movies/static/media/loading.3a9eb038.png"
   },
   "entrypoints": [
     "static/js/runtime-main.b9be0459.js",
     "static/css/2.3c03f26f.chunk.css",
-    "static/js/2.c0be9953.chunk.js",
-    "static/css/main.872fa78d.chunk.css",
-    "static/js/main.292bafd9.chunk.js"
+    "static/js/2.01cbe96a.chunk.js",
+    "static/css/main.4250c740.chunk.css",
+    "static/js/main.8a675793.chunk.js"
   ]
 }
