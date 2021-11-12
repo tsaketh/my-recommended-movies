@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
+import { withCookies } from 'react-cookie';
 import Validations from '../Components/Validations';
+import { USER_API_PROD } from '../Constants';
 
 class Register extends Component{
     constructor(){
@@ -52,7 +54,7 @@ class Register extends Component{
     onSignUp = () => {
         this.setState({errors: ""});
         if (this.state.nameError === "" && this.state.emailError === "" && this.state.passwordError === "") {
-            fetch("https://floating-reaches-01708.herokuapp.com/signup", {
+            fetch(`${USER_API_PROD}signup`, {
                 method: 'POST',
                 headers: {
                     'Content-type': 'application/json'
@@ -68,8 +70,10 @@ class Register extends Component{
                 if (data === "The email already exists.") {
                     this.setState({errors: data});
                 } else {
+                    this.props.cookies.set('id_token', data.id_token, { path: '/', maxAge: 86400})
+                    this.props.cookies.set('refresh_token', data.refresh_token, { path: '/', maxAge: 86400})
                     this.props.getUser(data);
-                    this.props.userAuth(true);
+                    // this.props.userAuth(true);
                 }
             }).catch(e => {
                 alert(e+"\r\nServer could be down due to maintanance.\r\nTry again after sometime.\r\nElse try after troubleshooting your network connection")
@@ -128,4 +132,4 @@ class Register extends Component{
     }
     
 }
-export default Register;
+export default withCookies(Register);

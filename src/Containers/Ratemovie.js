@@ -1,6 +1,8 @@
 import React from 'react';
 import { Component } from 'react';
+import { withCookies } from 'react-cookie';
 import ReactStars from 'react-rating-stars-component';
+import { RESOURCE_API_PROD } from '../Constants';
 
 class Ratemovie extends Component {
     constructor() {
@@ -12,18 +14,27 @@ class Ratemovie extends Component {
     onRateOk(){
         this.props.setToastMessage("Please wait while we record your rating")
         this.props.toggleToaster()
-        fetch(`https://ts-recommender-api-11798.herokuapp.com/rateMovie/usr/${this.props.userId}/movie/${this.props.movieId}/rating/${this.state.rating}`, {
-            method: 'POST'
+        this.props.refreshToken().then(resolved => {
+            fetch(`${RESOURCE_API_PROD}rateMovie?movieId=${this.props.movieId}&rating=${this.state.rating}`, {
+                method: 'POST',
+                headers: {
+                    'Authorization': `Bearer ${this.props.cookies.get('id_token')}`
+                }
+            })
+             .then(response => response.json())
+             .then(data => {
+                 if (data[0]==='Success') {
+                     this.props.setToastMessage("Your rating for the movie is recorded")
+                     this.props.toggleToaster()
+                     this.props.toggleModal(false)
+                } else {
+                    alert('Unkown Error! Try again after sometime')
+                }})
+        }).catch(rejected => {
+            this.props.setToastMessage("Session expired. Please log out from the browser and login again")
+            this.props.toggleToaster()
+            this.props.toggleModal(false)
         })
-         .then(response => response.json())
-         .then(data => {
-             if (data[0]==='Success') {
-                 this.props.setToastMessage("Your rating for the movie is recorded")
-                 this.props.toggleToaster()
-                 this.props.toggleModal(false)
-            } else {
-                alert('Unkown Error! Try again after sometime')
-            }})
     }
     render(){
         return (
@@ -51,4 +62,4 @@ class Ratemovie extends Component {
     }
 }
 
-export default Ratemovie;
+export default withCookies(Ratemovie);

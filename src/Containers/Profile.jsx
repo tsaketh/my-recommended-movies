@@ -6,6 +6,8 @@ import Modal from '../Components/Modal';
 import EditUserForm from '../Components/EditUserForm';
 import Toaster from '../Components/Toaster';
 import ChangePasswordForm from '../Components/ChangePasswordForm';
+import { USER_API_PROD } from '../Constants';
+import { withCookies } from 'react-cookie';
 
 class Profile extends Component {
     constructor(){
@@ -69,36 +71,41 @@ class Profile extends Component {
         } else if (this.state.editEmail.match(/^[a-zA-Z0-9.]+@([a-zA-Z]+\.[a-zA-Z]{2,})$/) === null) {
             this.setState({editUserFormValidations: {nameErrors:"", emailErrors: "Invalid email address format", serverSideErrors:""}})
         } else {
-            fetch(`https://floating-reaches-01708.herokuapp.com/update-user?id=${this.props.user.id}&name=${this.state.editName}&email=${this.state.editEmail}&avatar_id=${this.state.editAvatar}`, {
-                method: 'PUT'
-            })
-            .then(res => res.json())
-            .then(user => {
-                if (Object.hasOwnProperty.call(user[0], 'id')) {
-                    this.props.getUser(user[0])
-                    this.setState(
-                        {
-                            editUserStatus: "User profile is updated successfully",
-                            editUserFormValidations: {nameErrors: "", emailErrors: "", serverSideErrors: ""},
-                        }
-                    )
-                    this.toggleEditUserPopup()
-                    this.toggleEditUserStatusDisplay()
-                } else {
-                    this.setState(
-                        {
-                            editUserFormValidations: {nameErrors: "", emailErrors: "", serverSideErrors: user},
-                        }
-                    )
-                }
-                this.setState(
-                    {
-                        editName: this.props.user.name,
-                        editEmail: this.props.user.email    
+            this.props.refreshToken().then(resolved => {
+                fetch(`${USER_API_PROD}update-user?name=${this.state.editName}&email=${this.state.editEmail}&avatar_id=${this.state.editAvatar}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Authorization': `Bearer ${this.props.cookies.get('id_token')}`
                     }
-                )
-            })
-            .catch(err => alert("Error updating your information. Please try again later", err))
+                })
+                .then(res => res.json())
+                .then(user => {
+                    if (Object.hasOwnProperty.call(user[0], 'id')) {
+                        this.props.getUser(user[0])
+                        this.setState(
+                            {
+                                editUserStatus: "User profile is updated successfully",
+                                editUserFormValidations: {nameErrors: "", emailErrors: "", serverSideErrors: ""},
+                            }
+                        )
+                        this.toggleEditUserPopup()
+                        this.toggleEditUserStatusDisplay()
+                    } else {
+                        this.setState(
+                            {
+                                editUserFormValidations: {nameErrors: "", emailErrors: "", serverSideErrors: user},
+                            }
+                        )
+                    }
+                    this.setState(
+                        {
+                            editName: this.props.user.name,
+                            editEmail: this.props.user.email    
+                        }
+                    )
+                })
+                .catch(err => alert("Error updating your information. Please try again later", err))
+            }).catch(console.log)
         }
     }
     onChangePasswordFormSubmit=()=>{
@@ -107,44 +114,47 @@ class Profile extends Component {
         } else if (this.state.confirmPassword !== this.state.newPassword) {
             this.setState({changePasswordFormValidations: {confirmPasswordError: "Password did not match. Please reenter the same new password for confirmation"}})
         } else {
-            fetch("https://floating-reaches-01708.herokuapp.com/update-password", {
-                method: 'PUT', 
-                headers: {
-                    'Content-Type': 'application/json'
-                }, 
-                body: JSON.stringify({
-                    id: this.props.user.id, 
-                    oldPassword: this.state.oldPassword, 
-                    newPassword: this.state.newPassword
+            this.props.refreshToken().then(resolved=>{
+                fetch(`${USER_API_PROD}update-password`, {
+                    method: 'PUT', 
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${this.props.cookies.get('id_token')}`
+                    }, 
+                    body: JSON.stringify({
+                        id: this.props.user.id, 
+                        oldPassword: this.state.oldPassword, 
+                        newPassword: this.state.newPassword
+                    })
                 })
-            })
-            .then(res => res.json())
-            .then(result => {
-                if (result==='Success') {
-                    this.setState(
-                        {
-                            changePasswordStatus: "Password change is successfull", 
-                            changePasswordFormValidations: {confirmPasswordError: "", errors: ""},
-                        }
-                    )
-                    this.toggleChangePasswordPopup()
-                    this.toggleChangePasswordStatusDisplay()
-                } else {
-                    this.setState(
-                        {
-                            changePasswordFormValidations: {confirmPasswordError: "", errors: result},
-                        }
-                    )
-                }
-                this.setState(
-                    {
-                        oldPassword:"",
-                        newPassword:"",
-                        confirmPassword:""
+                .then(res => res.json())
+                .then(result => {
+                    if (result==='Success') {
+                        this.setState(
+                            {
+                                changePasswordStatus: "Password change is successfull", 
+                                changePasswordFormValidations: {confirmPasswordError: "", errors: ""},
+                            }
+                        )
+                        this.toggleChangePasswordPopup()
+                        this.toggleChangePasswordStatusDisplay()
+                    } else {
+                        this.setState(
+                            {
+                                changePasswordFormValidations: {confirmPasswordError: "", errors: result},
+                            }
+                        )
                     }
-                )
-            })
-            .catch(err => alert("Error occured while updating the password. Please try again after some time"))
+                    this.setState(
+                        {
+                            oldPassword:"",
+                            newPassword:"",
+                            confirmPassword:""
+                        }
+                    )
+                })
+                .catch(err => alert("Error occured while updating the password. Please try again after some time"))
+            }).catch(console.log)
         }
     }
     onUserNameChange=(event)=>{
@@ -197,7 +207,7 @@ class Profile extends Component {
             {editAvatar: id}
         )
     }
-    areUserDetailsChanged=()=>this.state.editName.length>0 && this.state.editEmail.length>0 && (this.state.editName!==this.props.user.name || this.state.editEmail!==this.props.user.email || this.state.editAvatar!==this.props.user.avatar_id)
+    areUserDetailsChanged=()=>this.state.editName && this.state.editName.length>0 && this.state.editEmail.length>0 && (this.state.editName!==this.props.user.name || this.state.editEmail!==this.props.user.email || this.state.editAvatar!==this.props.user.avatar_id)
     arePasswordDetailsChanged=()=>this.state.oldPassword.length>0 && this.state.newPassword.length>0 && this.state.confirmPassword.length>0 
     render(){
         return(
@@ -245,4 +255,4 @@ class Profile extends Component {
     }
 }
 
-export default Profile;
+export default withCookies(Profile);
