@@ -8,7 +8,7 @@ import Ratemovie from './Ratemovie';
 import Toaster from '../Components/Toaster';
 import { useEffect } from 'react';
 import Loader from '../Components/Loader';
-import { RESOURCE_API_LOCAL } from '../Constants';
+import { RESOURCE_API_PROD } from '../Constants';
 
 const Viewmovieinfo = ({userId, isSignedIn, refreshToken}) => {
     const [modalState, setModalState] = useState(false);
@@ -17,7 +17,7 @@ const Viewmovieinfo = ({userId, isSignedIn, refreshToken}) => {
     const [movie, setMovie] = useState({});
     const { movieId } = useParams();
     useEffect(() => {
-        fetch(`${RESOURCE_API_LOCAL}movie/${movieId}`)
+        fetch(`${RESOURCE_API_PROD}movie/${movieId}`)
         .then(res => res.json())
         .then(movie => setMovie(movie[0]))
         .catch(err => console.log)

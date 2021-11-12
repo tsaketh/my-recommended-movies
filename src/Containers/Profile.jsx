@@ -6,7 +6,7 @@ import Modal from '../Components/Modal';
 import EditUserForm from '../Components/EditUserForm';
 import Toaster from '../Components/Toaster';
 import ChangePasswordForm from '../Components/ChangePasswordForm';
-import { USER_API_LOCAL } from '../Constants';
+import { USER_API_PROD } from '../Constants';
 import { withCookies } from 'react-cookie';
 
 class Profile extends Component {
@@ -72,7 +72,7 @@ class Profile extends Component {
             this.setState({editUserFormValidations: {nameErrors:"", emailErrors: "Invalid email address format", serverSideErrors:""}})
         } else {
             this.props.refreshToken().then(resolved => {
-                fetch(`${USER_API_LOCAL}update-user?name=${this.state.editName}&email=${this.state.editEmail}&avatar_id=${this.state.editAvatar}`, {
+                fetch(`${USER_API_PROD}update-user?name=${this.state.editName}&email=${this.state.editEmail}&avatar_id=${this.state.editAvatar}`, {
                     method: 'PUT',
                     headers: {
                         'Authorization': `Bearer ${this.props.cookies.get('id_token')}`
@@ -115,7 +115,7 @@ class Profile extends Component {
             this.setState({changePasswordFormValidations: {confirmPasswordError: "Password did not match. Please reenter the same new password for confirmation"}})
         } else {
             this.props.refreshToken().then(resolved=>{
-                fetch(`${USER_API_LOCAL}update-password`, {
+                fetch(`${USER_API_PROD}update-password`, {
                     method: 'PUT', 
                     headers: {
                         'Content-Type': 'application/json',

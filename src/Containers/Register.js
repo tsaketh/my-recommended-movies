@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { withCookies } from 'react-cookie';
 import Validations from '../Components/Validations';
-import { USER_API_LOCAL } from '../Constants';
+import { USER_API_PROD } from '../Constants';
 
 class Register extends Component{
     constructor(){
@@ -54,7 +54,7 @@ class Register extends Component{
     onSignUp = () => {
         this.setState({errors: ""});
         if (this.state.nameError === "" && this.state.emailError === "" && this.state.passwordError === "") {
-            fetch(`${USER_API_LOCAL}signup`, {
+            fetch(`${USER_API_PROD}signup`, {
                 method: 'POST',
                 headers: {
                     'Content-type': 'application/json'

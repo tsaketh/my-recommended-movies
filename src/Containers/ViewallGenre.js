@@ -4,7 +4,7 @@ import CardContainer from './CardContainer';
 import TitleGenre from '../Components/TitleGenre';
 import ErrorHandler from '../Components/ErrorHandler';
 import { withRouter } from 'react-router-dom';
-import { RESOURCE_API_LOCAL } from '../Constants';
+import { RESOURCE_API_PROD } from '../Constants';
 import { withCookies } from 'react-cookie';
 
 class ViewallGenre extends Component {
@@ -17,12 +17,12 @@ class ViewallGenre extends Component {
     }
     componentDidMount() {
         if (this.props.match.params.genre === 'popularmovies') {
-            fetch(`${RESOURCE_API_LOCAL}${this.props.match.params.genre}`)
+            fetch(`${RESOURCE_API_PROD}${this.props.match.params.genre}`)
             .then(response => response.json())
             .then(movies => this.setState({genredmovies: movies}))
         } else if(this.props.match.params.genre === 'recommendations') {
             this.props.refreshToken().then(resolved => {
-                fetch(`${RESOURCE_API_LOCAL}${this.props.match.params.genre}`, {
+                fetch(`${RESOURCE_API_PROD}${this.props.match.params.genre}`, {
                     method: "GET",
                     withCrendentials: true,
                     credentials: 'include',
@@ -36,17 +36,17 @@ class ViewallGenre extends Component {
             }).catch(rejected => {this.setState({genredmovies:"Please login and rate some movies to get recommendations"})})
         } else if(this.props.match.params.similartomovieId) {
             this.getMovieTitle(this.props.match.params.similartomovieId)
-            fetch(`${RESOURCE_API_LOCAL}similarmovies/${this.props.match.params.similartomovieId}`)
+            fetch(`${RESOURCE_API_PROD}similarmovies/${this.props.match.params.similartomovieId}`)
             .then(response => response.json())
             .then(movies => this.setState({genredmovies: movies}))
         }  else {
-            fetch(`${RESOURCE_API_LOCAL}movies/${this.props.match.params.genre}`)
+            fetch(`${RESOURCE_API_PROD}movies/${this.props.match.params.genre}`)
             .then(response => response.json())
             .then(movies => this.setState({genredmovies: movies.results}))
         }
     }
     getMovieTitle=(movieId)=>{
-        fetch(`${RESOURCE_API_LOCAL}movie/${movieId}`)
+        fetch(`${RESOURCE_API_PROD}movie/${movieId}`)
         .then(res => res.json())
         .then(movie => this.setState({movieTitle: (movie[0].Title && movie[0].Title) || movie[0]}))
     }

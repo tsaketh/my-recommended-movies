@@ -4,7 +4,7 @@ import CardContainer from './CardContainer';
 import TitleGenre from '../Components/TitleGenre';
 import ErrorHandler from '../Components/ErrorHandler';
 import { withRouter } from 'react-router-dom';
-import { RESOURCE_API_LOCAL } from '../Constants';
+import { RESOURCE_API_PROD } from '../Constants';
 import { withCookies } from 'react-cookie';
 
 class Genremovies extends Component {
@@ -16,7 +16,7 @@ class Genremovies extends Component {
     }
     componentDidUpdate(prevprops) {
         if(this.props.genre.slice(0,10)==='Similar to'  && this.props.movieId !== prevprops.movieId) {
-            fetch(`${RESOURCE_API_LOCAL}similarmovies/${this.props.movieId}`, {
+            fetch(`${RESOURCE_API_PROD}similarmovies/${this.props.movieId}`, {
                 method: "GET",
                 headers: {
                     'Authorization': `Bearer ${this.props.cookies.get('id_token')}`
@@ -28,13 +28,13 @@ class Genremovies extends Component {
     }
     componentDidMount() {
         if (this.props.genre === 'popularmovies') {
-            fetch(`${RESOURCE_API_LOCAL}${this.props.genre}`)
+            fetch(`${RESOURCE_API_PROD}${this.props.genre}`)
             .then(response => response.json())
             .then(movies => this.setState({movies: movies}))
             .catch(e => {alert("Failed to load the data. Please check your internet connection and try again after sometime")})
         } else if(this.props.genre === 'recommendations') {
             this.props.refreshToken().then(resolved => {
-                fetch(`${RESOURCE_API_LOCAL}${this.props.genre}`, {
+                fetch(`${RESOURCE_API_PROD}${this.props.genre}`, {
                     method: "GET",
                     withCrendentials: true,
                     credentials: 'include',
@@ -47,12 +47,12 @@ class Genremovies extends Component {
                 .catch(e => {alert("Failed to load the data. Please check your internet connection and try again after sometime")})
             }).catch(rejected => {this.setState({movies:"Please login and rate some movies to get recommendations"})})
         } else if(this.props.genre.slice(0,10)==='Similar to') {
-            fetch(`${RESOURCE_API_LOCAL}similarmovies/${this.props.movieId}`)
+            fetch(`${RESOURCE_API_PROD}similarmovies/${this.props.movieId}`)
             .then(response => response.json())
             .then(movies => this.setState({movies: movies}))
             .catch(e => {alert("Failed to load the data. Please check your internet connection and try again after sometime")})
         } else {
-            fetch(`${RESOURCE_API_LOCAL}movies/${this.props.genre}?offset=1&limit=20`)
+            fetch(`${RESOURCE_API_PROD}movies/${this.props.genre}?offset=1&limit=20`)
             .then(response => response.json())
             .then(movies => this.setState({movies: movies.results}))
             .catch(e => {alert("Failed to load the data. Please check your internet connection and try again after sometime")})

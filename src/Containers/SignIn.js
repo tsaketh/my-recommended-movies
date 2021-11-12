@@ -2,7 +2,7 @@ import React, {Component} from  'react';
 import { withCookies } from 'react-cookie';
 import { Link, withRouter } from 'react-router-dom';
 import Validations from '../Components/Validations';
-import { USER_API_LOCAL } from '../Constants';
+import { USER_API_PROD } from '../Constants';
 
 class SignIn extends Component {
     constructor(){
@@ -23,7 +23,7 @@ class SignIn extends Component {
     }
     authenticateUser = () =>{
         this.setState({errors: ""});
-        fetch(`${USER_API_LOCAL}signin`, {//https://floating-reaches-01708.herokuapp.com
+        fetch(`${USER_API_PROD}signin`, {//https://floating-reaches-01708.herokuapp.com
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'

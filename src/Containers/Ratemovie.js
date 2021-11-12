@@ -2,7 +2,7 @@ import React from 'react';
 import { Component } from 'react';
 import { withCookies } from 'react-cookie';
 import ReactStars from 'react-rating-stars-component';
-import { RESOURCE_API_LOCAL } from '../Constants';
+import { RESOURCE_API_PROD } from '../Constants';
 
 class Ratemovie extends Component {
     constructor() {
@@ -15,7 +15,7 @@ class Ratemovie extends Component {
         this.props.setToastMessage("Please wait while we record your rating")
         this.props.toggleToaster()
         this.props.refreshToken().then(resolved => {
-            fetch(`${RESOURCE_API_LOCAL}rateMovie?movieId=${this.props.movieId}&rating=${this.state.rating}`, {
+            fetch(`${RESOURCE_API_PROD}rateMovie?movieId=${this.props.movieId}&rating=${this.state.rating}`, {
                 method: 'POST',
                 headers: {
                     'Authorization': `Bearer ${this.props.cookies.get('id_token')}`

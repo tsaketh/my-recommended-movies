@@ -9,7 +9,7 @@ import Modal from '../Components/Modal';
 import CreateMovieForm from '../Components/CreateMovieForm';
 import Toaster from '../Components/Toaster';
 import Confirmation from '../Components/Confirmation';
-import { RESOURCE_API_LOCAL, USER_API_LOCAL } from '../Constants';
+import { RESOURCE_API_PROD, USER_API_PROD } from '../Constants';
 import { withCookies } from 'react-cookie';
 
 class Admin extends Component{
@@ -35,7 +35,7 @@ componentDidMount(){
     if (this.props.user.role==="Admin") {
         if (this.props.activeOption==='Users') { //floating-reaches-01708.herokuapp.com
             this.props.refreshToken().then(resolved => {
-                fetch(`${USER_API_LOCAL}users?offset=${(this.state.currentPage-1)*this.state.pageLimit}&limit=${this.state.pageLimit}`, {
+                fetch(`${USER_API_PROD}users?offset=${(this.state.currentPage-1)*this.state.pageLimit}&limit=${this.state.pageLimit}`, {
                     method: "GET",
                     headers: {
                         'Authorization': `Bearer ${this.props.cookies.get('id_token')}`
@@ -47,7 +47,7 @@ componentDidMount(){
             }).catch(console.log)
         } else {
             this.props.refreshToken().then(resolved => {
-                fetch(`${RESOURCE_API_LOCAL}movies?offset=${(this.state.currentPage-1)*this.state.pageLimit+1}&limit=${this.state.pageLimit}`, {
+                fetch(`${RESOURCE_API_PROD}movies?offset=${(this.state.currentPage-1)*this.state.pageLimit+1}&limit=${this.state.pageLimit}`, {
                     method: "GET",
                     headers: {
                         'Authorization': `Bearer ${this.props.cookies.get('id_token')}`
@@ -68,7 +68,7 @@ componentDidUpdate(prevProps, prevState){
         }
         if (this.props.activeOption==='Users') {
             this.props.refreshToken().then(resolved => {
-                fetch(`${USER_API_LOCAL}users?offset=${(this.state.currentPage-1)*this.state.pageLimit}&limit=${this.state.pageLimit}&search=${this.state.searchfield}`, {
+                fetch(`${USER_API_PROD}users?offset=${(this.state.currentPage-1)*this.state.pageLimit}&limit=${this.state.pageLimit}&search=${this.state.searchfield}`, {
                     method: "GET",
                     headers: {
                         'Authorization': `Bearer ${this.props.cookies.get('id_token')}`
@@ -80,7 +80,7 @@ componentDidUpdate(prevProps, prevState){
             }).catch(console.log)
         } else {
             this.props.refreshToken().then(resolved => {
-                fetch(`${RESOURCE_API_LOCAL}movies?offset=${(this.state.currentPage-1)*this.state.pageLimit+1}&limit=${this.state.pageLimit}&search=${this.state.searchfield}`, {
+                fetch(`${RESOURCE_API_PROD}movies?offset=${(this.state.currentPage-1)*this.state.pageLimit+1}&limit=${this.state.pageLimit}&search=${this.state.searchfield}`, {
                     method: "GET",
                     headers: {
                         'Authorization': `Bearer ${this.props.cookies.get('id_token')}`
@@ -98,7 +98,7 @@ loadResults=()=>{
         this.setState({currentPage: 1})
         if (this.props.activeOption==='Users') {
             this.props.refreshToken().then(resolved => {
-                fetch(`${USER_API_LOCAL}users?offset=${(this.state.currentPage-1)*this.state.pageLimit}&limit=${this.state.pageLimit}&search=${this.state.searchfield}`, {
+                fetch(`${USER_API_PROD}users?offset=${(this.state.currentPage-1)*this.state.pageLimit}&limit=${this.state.pageLimit}&search=${this.state.searchfield}`, {
                     method: "GET",
                     headers: {
                         'Authorization': `Bearer ${this.props.cookies.get('id_token')}`
@@ -110,7 +110,7 @@ loadResults=()=>{
             }).catch(console.log)
         } else {
             this.props.refreshToken().then(resolved => {
-                fetch(`${RESOURCE_API_LOCAL}movies?offset=${(this.state.currentPage-1)*this.state.pageLimit+1}&limit=${this.state.pageLimit}&search=${this.state.searchfield}`, {
+                fetch(`${RESOURCE_API_PROD}movies?offset=${(this.state.currentPage-1)*this.state.pageLimit+1}&limit=${this.state.pageLimit}&search=${this.state.searchfield}`, {
                     method: "GET",
                     headers: {
                         'Authorization': `Bearer ${this.props.cookies.get('id_token')}`
@@ -124,7 +124,7 @@ loadResults=()=>{
     } else {
         if (this.props.activeOption==='Users') {
             this.props.refreshToken().then(resolved => {
-                fetch(`${USER_API_LOCAL}users?offset=${(this.state.currentPage-1)*this.state.pageLimit}&limit=${this.state.pageLimit}`, {
+                fetch(`${USER_API_PROD}users?offset=${(this.state.currentPage-1)*this.state.pageLimit}&limit=${this.state.pageLimit}`, {
                     method: "GET",
                     headers: {
                         'Authorization': `Bearer ${this.props.cookies.get('id_token')}`
@@ -136,7 +136,7 @@ loadResults=()=>{
             }).catch(console.log)
         } else {
             this.props.refreshToken().then(resolved => {
-                fetch(`${RESOURCE_API_LOCAL}movies?offset=${(this.state.currentPage-1)*this.state.pageLimit+1}&limit=${this.state.pageLimit}`, {
+                fetch(`${RESOURCE_API_PROD}movies?offset=${(this.state.currentPage-1)*this.state.pageLimit+1}&limit=${this.state.pageLimit}`, {
                     method: "GET",
                     headers: {
                         'Authorization': `Bearer ${this.props.cookies.get('id_token')}`
@@ -179,7 +179,7 @@ setMovieYear=(event)=>{
 }
 createMovie=()=>{
     this.props.refreshToken().then(resolved => {
-        fetch(`${RESOURCE_API_LOCAL}createMovie?title=${(this.state.movieTitle)}&genre=${this.state.movieGenre}&year=${this.state.movieYear}`, {
+        fetch(`${RESOURCE_API_PROD}createMovie?title=${(this.state.movieTitle)}&genre=${this.state.movieGenre}&year=${this.state.movieYear}`, {
             method: 'POST',
             headers: {
                 'Authorization': `Bearer ${this.props.cookies.get('id_token')}`
@@ -220,7 +220,7 @@ setOptionClickedFor=(id, role)=>{
 }
 changeAccess=()=>{
     this.props.refreshToken().then(resolved => {
-        fetch(`${USER_API_LOCAL}change-role`, {
+        fetch(`${USER_API_PROD}change-role`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
