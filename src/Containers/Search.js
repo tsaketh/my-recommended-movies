@@ -3,6 +3,7 @@ import CardContainer from '../Containers/CardContainer';
 import '../App.css';
 import Scroll from '../Components/Scroll';
 import Searchbar from '../Components/Searchbar';
+import { RESOURCE_API_LOCAL } from '../Constants';
 
 class Search extends Component {
     constructor(){
@@ -14,7 +15,7 @@ class Search extends Component {
     }
     loadResults=()=>{
         if (this.state.searchfield.length>=3) {
-            fetch(`https://ts-recommender-api-11798.herokuapp.com/search/${this.state.searchfield}`)
+            fetch(`${RESOURCE_API_LOCAL}search/${this.state.searchfield}`)
             .then(response => response.json())
             .then(users => this.setState({robots: users.results}))
         }

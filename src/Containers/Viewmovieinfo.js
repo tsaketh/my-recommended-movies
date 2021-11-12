@@ -8,15 +8,16 @@ import Ratemovie from './Ratemovie';
 import Toaster from '../Components/Toaster';
 import { useEffect } from 'react';
 import Loader from '../Components/Loader';
+import { RESOURCE_API_LOCAL } from '../Constants';
 
-const Viewmovieinfo = ({userId, isSignedIn}) => {
+const Viewmovieinfo = ({userId, isSignedIn, refreshToken}) => {
     const [modalState, setModalState] = useState(false);
     const [toasterState, setToasterState] = useState(false);
     const [toastMessage, setToastMessage] = useState('');
     const [movie, setMovie] = useState({});
     const { movieId } = useParams();
     useEffect(() => {
-        fetch(`https://ts-recommender-api-11798.herokuapp.com/movie/${movieId}`)
+        fetch(`${RESOURCE_API_LOCAL}movie/${movieId}`)
         .then(res => res.json())
         .then(movie => setMovie(movie[0]))
         .catch(err => console.log)
@@ -64,9 +65,10 @@ const Viewmovieinfo = ({userId, isSignedIn}) => {
                     genre={'Similar to '+movie.Title} 
                     movieId={movieId}
                     isSignedIn={isSignedIn}
+                    refreshToken={refreshToken}
                     />   
                 <Modal modalState={modalState} toggle={setModalState}>
-                    <Ratemovie  Title={movie.Title} movieId={movie.Id} userId={userId} isSignedIn={isSignedIn} toggleModal={setModalState} toggleToaster={toggleToaster} setToastMessage={setToastMessage}/>
+                    <Ratemovie  Title={movie.Title} movieId={movie.Id} userId={userId} isSignedIn={isSignedIn} toggleModal={setModalState} toggleToaster={toggleToaster} setToastMessage={setToastMessage} refreshToken={refreshToken}/>
                 </Modal>
                 <Toaster toasterState={toasterState} toggle={toggleToaster} message={toastMessage}/>     
             </div>

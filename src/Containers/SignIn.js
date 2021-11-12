@@ -1,6 +1,8 @@
 import React, {Component} from  'react';
+import { withCookies } from 'react-cookie';
 import { Link, withRouter } from 'react-router-dom';
 import Validations from '../Components/Validations';
+import { USER_API_LOCAL } from '../Constants';
 
 class SignIn extends Component {
     constructor(){
@@ -19,10 +21,9 @@ class SignIn extends Component {
     onPasswordChange = (event) => {
         this.setState({password: event.target.value})
     }
-
     authenticateUser = () =>{
         this.setState({errors: ""});
-        fetch("https://floating-reaches-01708.herokuapp.com/signin", {
+        fetch(`${USER_API_LOCAL}signin`, {//https://floating-reaches-01708.herokuapp.com
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -38,8 +39,10 @@ class SignIn extends Component {
                 data === "Error Logging in. Please check your network and try again") {
                 this.setState({errors: data});
             } else {
+                this.props.cookies.set('id_token', data.id_token, { path: '/', maxAge: 86400})
+                this.props.cookies.set('refresh_token', data.refresh_token, { path: '/', maxAge: 86400})
                 this.props.getUser(data);
-                this.props.userAuth(true);
+                // this.props.userAuth(true);
             }
         }).catch(alert);
     }
@@ -93,4 +96,4 @@ class SignIn extends Component {
     
 }
 
-export default withRouter(SignIn);
+export default withRouter(withCookies(SignIn));

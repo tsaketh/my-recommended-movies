@@ -9,6 +9,8 @@ import Modal from '../Components/Modal';
 import CreateMovieForm from '../Components/CreateMovieForm';
 import Toaster from '../Components/Toaster';
 import Confirmation from '../Components/Confirmation';
+import { RESOURCE_API_LOCAL, USER_API_LOCAL } from '../Constants';
+import { withCookies } from 'react-cookie';
 
 class Admin extends Component{
 constructor(){
@@ -32,34 +34,62 @@ constructor(){
 componentDidMount(){
     if (this.props.user.role==="Admin") {
         if (this.props.activeOption==='Users') { //floating-reaches-01708.herokuapp.com
-            fetch(`https://floating-reaches-01708.herokuapp.com/users?offset=${(this.state.currentPage-1)*this.state.pageLimit}&limit=${this.state.pageLimit}`)
-                .then(res => res.json())
-                .then(users => {this.setState({tableContent: users.results, totalRecords: users.totalRecords})})
-                .catch(err => {alert("Unkown error occured while fetching users")})
+            this.props.refreshToken().then(resolved => {
+                fetch(`${USER_API_LOCAL}users?offset=${(this.state.currentPage-1)*this.state.pageLimit}&limit=${this.state.pageLimit}`, {
+                    method: "GET",
+                    headers: {
+                        'Authorization': `Bearer ${this.props.cookies.get('id_token')}`
+                    }
+                })
+                    .then(res => res.json())
+                    .then(users => {this.setState({tableContent: users.results, totalRecords: users.totalRecords})})
+                    .catch(err => {alert("Unkown error occured while fetching users")})
+            }).catch(console.log)
         } else {
-            fetch(`https://ts-recommender-api-11798.herokuapp.com/movies?offset=${(this.state.currentPage-1)*this.state.pageLimit+1}&limit=${this.state.pageLimit}`)
-                .then(res => res.json())
-                .then(movies => {this.setState({tableContent: movies.results, totalRecords: movies.totalRecords[0]})})
-                .catch(err => {alert("Unknown error occured while fetching users")})   
+            this.props.refreshToken().then(resolved => {
+                fetch(`${RESOURCE_API_LOCAL}movies?offset=${(this.state.currentPage-1)*this.state.pageLimit+1}&limit=${this.state.pageLimit}`, {
+                    method: "GET",
+                    headers: {
+                        'Authorization': `Bearer ${this.props.cookies.get('id_token')}`
+                    }
+                })
+                    .then(res => res.json())
+                    .then(movies => {this.setState({tableContent: movies.results, totalRecords: movies.totalRecords[0]})})
+                    .catch(err => {alert("Unknown error occured while fetching users")})   
+            }).catch(console.log)
         }
     }
 }
 
 componentDidUpdate(prevProps, prevState){
-    if (this.props.user.role==="Admin" && (prevProps.activeOption!==this.props.activeOption || prevState.pageLimit!==this.state.pageLimit || prevState.currentPage!==this.state.currentPage || prevState.movieCreationStatus!==this.state.movieCreationStatus)) {
+    if (this.props.user.role==="Admin" && (prevProps.user.role !== this.props.user.role || prevProps.activeOption!==this.props.activeOption || prevState.pageLimit!==this.state.pageLimit || prevState.currentPage!==this.state.currentPage || prevState.movieCreationStatus!==this.state.movieCreationStatus)) {
         if (prevProps.activeOption!==this.props.activeOption) {
             this.setState({currentPage: 1, pageLimit: 10, searchfield: ''})
         }
         if (this.props.activeOption==='Users') {
-            fetch(`https://floating-reaches-01708.herokuapp.com/users?offset=${(this.state.currentPage-1)*this.state.pageLimit}&limit=${this.state.pageLimit}&search=${this.state.searchfield}`)
-                .then(res => res.json())
-                .then(users => {this.setState({tableContent: users.results, totalRecords: users.totalRecords})})
-                .catch(err => {alert("Unkown error occured while fetching users")})
+            this.props.refreshToken().then(resolved => {
+                fetch(`${USER_API_LOCAL}users?offset=${(this.state.currentPage-1)*this.state.pageLimit}&limit=${this.state.pageLimit}&search=${this.state.searchfield}`, {
+                    method: "GET",
+                    headers: {
+                        'Authorization': `Bearer ${this.props.cookies.get('id_token')}`
+                    }
+                })
+                    .then(res => res.json())
+                    .then(users => {this.setState({tableContent: users.results, totalRecords: users.totalRecords})})
+                    .catch(err => {alert("Unkown error occured while fetching users")})
+            }).catch(console.log)
         } else {
-            fetch(`https://ts-recommender-api-11798.herokuapp.com/movies?offset=${(this.state.currentPage-1)*this.state.pageLimit+1}&limit=${this.state.pageLimit}&search=${this.state.searchfield}`)
-                .then(res => res.json())
-                .then(movies => {this.setState({tableContent: movies.results, totalRecords: movies.totalRecords[0]})})
-                .catch(err => {alert("Unknown error occured while fetching users")})   
+            this.props.refreshToken().then(resolved => {
+                fetch(`${RESOURCE_API_LOCAL}movies?offset=${(this.state.currentPage-1)*this.state.pageLimit+1}&limit=${this.state.pageLimit}&search=${this.state.searchfield}`, {
+                    method: "GET",
+                    headers: {
+                        'Authorization': `Bearer ${this.props.cookies.get('id_token')}`
+                    }
+                })
+                    .then(res => res.json())
+                    .then(movies => {this.setState({tableContent: movies.results, totalRecords: movies.totalRecords[0]})})
+                    .catch(err => {alert("Unknown error occured while fetching users")})   
+            }).catch(console.log)
         }
     }
 }
@@ -67,27 +97,55 @@ loadResults=()=>{
     if (this.state.searchfield.trim().length>=3) {
         this.setState({currentPage: 1})
         if (this.props.activeOption==='Users') {
-            fetch(`https://floating-reaches-01708.herokuapp.com/users?offset=${(this.state.currentPage-1)*this.state.pageLimit}&limit=${this.state.pageLimit}&search=${this.state.searchfield}`)
-                .then(res => res.json())
-                .then(users => {this.setState({tableContent: users.results, totalRecords: users.totalRecords})})
-                .catch(err => {alert("Unkown error occured while fetching users")})
+            this.props.refreshToken().then(resolved => {
+                fetch(`${USER_API_LOCAL}users?offset=${(this.state.currentPage-1)*this.state.pageLimit}&limit=${this.state.pageLimit}&search=${this.state.searchfield}`, {
+                    method: "GET",
+                    headers: {
+                        'Authorization': `Bearer ${this.props.cookies.get('id_token')}`
+                    }
+                })
+                    .then(res => res.json())
+                    .then(users => {this.setState({tableContent: users.results, totalRecords: users.totalRecords})})
+                    .catch(err => {alert("Unkown error occured while fetching users")})
+            }).catch(console.log)
         } else {
-            fetch(`https://ts-recommender-api-11798.herokuapp.com/movies?offset=${(this.state.currentPage-1)*this.state.pageLimit+1}&limit=${this.state.pageLimit}&search=${this.state.searchfield}`)
-                .then(res => res.json())
-                .then(movies => {this.setState({tableContent: movies.results, totalRecords: movies.totalRecords[0]})})
-                .catch(err => {alert("Unknown error occured while fetching users")})   
+            this.props.refreshToken().then(resolved => {
+                fetch(`${RESOURCE_API_LOCAL}movies?offset=${(this.state.currentPage-1)*this.state.pageLimit+1}&limit=${this.state.pageLimit}&search=${this.state.searchfield}`, {
+                    method: "GET",
+                    headers: {
+                        'Authorization': `Bearer ${this.props.cookies.get('id_token')}`
+                    }
+                })
+                    .then(res => res.json())
+                    .then(movies => {this.setState({tableContent: movies.results, totalRecords: movies.totalRecords[0]})})
+                    .catch(err => {alert("Unknown error occured while fetching users")})   
+            }).catch(console.log)
         }        
     } else {
         if (this.props.activeOption==='Users') {
-            fetch(`https://floating-reaches-01708.herokuapp.com/users?offset=${(this.state.currentPage-1)*this.state.pageLimit}&limit=${this.state.pageLimit}`)
-                .then(res => res.json())
-                .then(users => {this.setState({tableContent: users.results, totalRecords: users.totalRecords})})
-                .catch(err => {alert("Unkown error occured while fetching users")})
+            this.props.refreshToken().then(resolved => {
+                fetch(`${USER_API_LOCAL}users?offset=${(this.state.currentPage-1)*this.state.pageLimit}&limit=${this.state.pageLimit}`, {
+                    method: "GET",
+                    headers: {
+                        'Authorization': `Bearer ${this.props.cookies.get('id_token')}`
+                    }
+                })
+                    .then(res => res.json())
+                    .then(users => {this.setState({tableContent: users.results, totalRecords: users.totalRecords})})
+                    .catch(err => {alert("Unkown error occured while fetching users")})
+            }).catch(console.log)
         } else {
-            fetch(`https://ts-recommender-api-11798.herokuapp.com/movies?offset=${(this.state.currentPage-1)*this.state.pageLimit+1}&limit=${this.state.pageLimit}`)
-                .then(res => res.json())
-                .then(movies => {this.setState({tableContent: movies.results, totalRecords: movies.totalRecords[0]})})
-                .catch(err => {alert("Unknown error occured while fetching users")})   
+            this.props.refreshToken().then(resolved => {
+                fetch(`${RESOURCE_API_LOCAL}movies?offset=${(this.state.currentPage-1)*this.state.pageLimit+1}&limit=${this.state.pageLimit}`, {
+                    method: "GET",
+                    headers: {
+                        'Authorization': `Bearer ${this.props.cookies.get('id_token')}`
+                    }
+                })
+                    .then(res => res.json())
+                    .then(movies => {this.setState({tableContent: movies.results, totalRecords: movies.totalRecords[0]})})
+                    .catch(err => {alert("Unknown error occured while fetching users")})   
+            }).catch(console.log)
         }        
     }
 }
@@ -120,23 +178,28 @@ setMovieYear=(event)=>{
     this.setState({movieYear: event.target.value})
 }
 createMovie=()=>{
-    fetch(`https://ts-recommender-api-11798.herokuapp.com/createMovie?title=${(this.state.movieTitle)}&genre=${this.state.movieGenre}&year=${this.state.movieYear}`, {
-        method: 'POST'
-    })
-        .then(res => res.json())
-        .then(movies => {
-            this.toggleModalState()
-            this.setState({movieCreationStatus: movies[0]})
-            this.toggleToasterState()
+    this.props.refreshToken().then(resolved => {
+        fetch(`${RESOURCE_API_LOCAL}createMovie?title=${(this.state.movieTitle)}&genre=${this.state.movieGenre}&year=${this.state.movieYear}`, {
+            method: 'POST',
+            headers: {
+                'Authorization': `Bearer ${this.props.cookies.get('id_token')}`
+            }
         })
-        .catch(err => {alert("Unknown error occured while fetching users")})
-        .finally(
-            this.setState({
-                movieTitle:'',
-                movieGenre:'',
-                movieYear:''
+            .then(res => res.json())
+            .then(movies => {
+                this.toggleModalState()
+                this.setState({movieCreationStatus: movies[0]})
+                this.toggleToasterState()
             })
-        )
+            .catch(err => {alert("Unknown error occured while fetching users")})
+            .finally(
+                this.setState({
+                    movieTitle:'',
+                    movieGenre:'',
+                    movieYear:''
+                })
+            )
+    }).catch(console.log)
 }
 toggleToasterState=()=>{
     this.setState({toasterState: !this.state.toasterState})
@@ -156,23 +219,26 @@ setOptionClickedFor=(id, role)=>{
     this.toggleConfirmationPopupState()
 }
 changeAccess=()=>{
-    fetch('https://floating-reaches-01708.herokuapp.com/change-role', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-            id: this.state.optionClickedFor.id,
-            role: (this.state.optionClickedFor.role==='User')?'Admin':'User'
+    this.props.refreshToken().then(resolved => {
+        fetch(`${USER_API_LOCAL}change-role`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${this.props.cookies.get('id_token')}`
+            },
+            body: JSON.stringify({
+                id: this.state.optionClickedFor.id,
+                role: (this.state.optionClickedFor.role==='User')?'Admin':'User'
+            })
         })
-    })
-    .then(res=>res.json())
-    .then(value=>{
-        this.setState({movieCreationStatus: value})
-        this.toggleConfirmationPopupState()
-        this.toggleToasterState()
-    })
-    .catch(err=>{alert("Unkown Error occured")})
+        .then(res=>res.json())
+        .then(value=>{
+            this.setState({movieCreationStatus: value})
+            this.toggleConfirmationPopupState()
+            this.toggleToasterState()
+        })
+        .catch(err=>{alert("Unkown Error occured")})
+    }).catch(console.log)
 }
 render(){
     return(
@@ -210,4 +276,4 @@ render(){
 }
 }
 
-export default Admin;
+export default withCookies(Admin);

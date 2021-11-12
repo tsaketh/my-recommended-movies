@@ -32,13 +32,11 @@ const Navigation = ({isSignedIn, userType, route, userAuth, avatarId}) => {
                 </Link>
                 :<></>}
             {(isSignedIn)?
-                <Link to='/signin'>
-                    <p onClick={()=>{
-                        userAuth(false)
-                    }}
-                    className="f6 dib white bg-animate hover-bg-white hover-black no-underline pv2 ph4 br-pill ba b--white-20 pointer" 
-                    >Sign Out</p>
-                </Link>
+                <p onClick={()=>{
+                    userAuth(false)
+                }}
+                className="f6 dib white bg-animate hover-bg-white hover-black no-underline pv2 ph4 br-pill ba b--white-20 pointer" 
+                >Sign Out</p>
                 :<></>}
             {(isSignedIn && route!=='profile')?
                 <Link to='/generalinformation'>
