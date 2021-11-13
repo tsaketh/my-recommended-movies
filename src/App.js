@@ -13,7 +13,7 @@ import Admin from './Containers/Admin';
 import { Redirect, Route, Switch, withRouter } from 'react-router-dom';
 import { withCookies, Cookies } from 'react-cookie';
 import jwtDecode from 'jwt-decode';
-import { USER_API_LOCAL } from './Constants';
+import { USER_API_PROD } from './Constants';
 
 class App extends Component {
   constructor(){
@@ -26,7 +26,7 @@ class App extends Component {
   userAuth =(value)=>{
     if(!value){
       this.refreshToken().then(resolved => {
-        fetch(`${USER_API_LOCAL}logout`, {
+        fetch(`${USER_API_PROD}logout`, {
           method: 'DELETE',
           headers:{
             'Content-Type': 'application/json',
@@ -60,7 +60,7 @@ class App extends Component {
   getUser = () => {
     this.refreshToken()
     .then(resolved => {
-        fetch(`${USER_API_LOCAL}user/current`, {
+        fetch(`${USER_API_PROD}user/current`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -82,7 +82,7 @@ class App extends Component {
     let today = new Date()
     var refreshToken = new Promise((resolve, reject) => {
       if (this.props.cookies.get('id_token')&&(jwtDecode(this.props.cookies.get('id_token')).exp * 1000)-500 < today.getTime()) {
-        fetch(`${USER_API_LOCAL}token`, {
+        fetch(`${USER_API_PROD}token`, {
           method: 'POST', 
           headers: {
             'Content-Type': 'application/json'
